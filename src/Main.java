@@ -1,12 +1,15 @@
+import java.util.Scanner;
+
 import org.itstep.domain.Product;
-import org.itstep.logic.ProductService;
+import org.itstep.logic.ProductServiceImpl;
 import org.itstep.storage.ProductStorage;
 import org.itstep.storage.memory.ProductMemoryStorageImpl;
+import org.itstep.ui.CommandManager;
 import org.itstep.util.List;
 
 public class Main {
-	public static ProductService getService() {
-		ProductService service = new ProductService();
+	public static ProductServiceImpl getService() {
+		ProductServiceImpl service = new ProductServiceImpl();
 		ProductStorage storage = new ProductMemoryStorageImpl();
 		service.setProductStorage(storage); // внедрение зависимости
 		return service;
@@ -18,7 +21,8 @@ public class Main {
 		}
 	}
 	public static void main(String[] args) {
-		ProductService service = getService();
+		/*
+		ProductServiceImpl service = getService();
 		Product product;
 		product = new Product();
 		product.setCategory("канцтовары");
@@ -56,5 +60,13 @@ public class Main {
 		product.setAmount(5);
 		service.save(product);
 		output(service.findAll());
+		*/
+		Scanner scanner = new Scanner(System.in);
+		CommandManager manager = new CommandManager();
+		while(true) {
+			System.out.print("> ");
+			String command = scanner.nextLine();
+			manager.exec(command);
+		}
 	}
 }
