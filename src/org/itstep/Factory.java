@@ -6,10 +6,21 @@ import org.itstep.logic.ProductServiceImpl;
 import org.itstep.storage.ProductStorage;
 import org.itstep.storage.memory.ProductMemoryStorageImpl;
 import org.itstep.ui.Command;
+import org.itstep.ui.ProductDeleteCommand;
 import org.itstep.ui.ProductListCommand;
 import org.itstep.ui.ProductSaveCommand;
 
 public class Factory {
+	private Command productDeleteCommand = null;
+	public Command getProductDeleteCommand() {
+		if(productDeleteCommand == null) {
+			ProductDeleteCommand command = new ProductDeleteCommand();
+			productDeleteCommand = command;
+			command.setProductService(getProductService());
+		}
+		return productDeleteCommand;
+	}
+
 	private Command productListCommand = null;
 	public Command getProductListCommand() {
 		if(productListCommand == null) {
