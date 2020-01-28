@@ -11,6 +11,7 @@ public class CommandManager implements Command {
 	public CommandManager() {
 		commands.put("help", this);
 		commands.put("list", factory.getProductListCommand());
+		commands.put("save", factory.getProductSaveCommand());
 		commands.put("exit", new ExitCommand());
 	}
 
