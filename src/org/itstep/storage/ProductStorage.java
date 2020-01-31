@@ -4,13 +4,13 @@ import org.itstep.domain.Product;
 import org.itstep.util.List;
 
 public interface ProductStorage {
-	Long create(Product product);
+	Long create(Product product) throws StorageException;
 
-	Product read(Long id);
+	Product read(Long id) throws StorageException;
 
-	List<Product> read();
+	List<Product> read() throws StorageException;
 
-	void update(Product product);
+	void update(Product product) throws StorageException;
 
-	void delete(Long id);
+	void delete(Long id) throws StorageException;
 }

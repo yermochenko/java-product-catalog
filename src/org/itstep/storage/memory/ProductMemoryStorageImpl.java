@@ -2,6 +2,7 @@ package org.itstep.storage.memory;
 
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductStorage;
+import org.itstep.storage.StorageException;
 import org.itstep.util.List;
 
 public class ProductMemoryStorageImpl implements ProductStorage {
@@ -32,13 +33,14 @@ public class ProductMemoryStorageImpl implements ProductStorage {
 	}
 
 	@Override
-	public void update(Product product) {
+	public void update(Product product) throws StorageException {
 		for(int i = 0; i < products.size(); i++) {
 			if(products.get(i).getId().equals(product.getId())) {
 				products.set(i, product);
-				break;
+				return;
 			}
 		}
+		throw new StorageException();
 	}
 
 	@Override

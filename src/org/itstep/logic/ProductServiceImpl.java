@@ -2,6 +2,7 @@ package org.itstep.logic;
 
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductStorage;
+import org.itstep.storage.StorageException;
 import org.itstep.util.List;
 
 public class ProductServiceImpl implements ProductService {
@@ -12,21 +13,33 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findAll() {
-		return productStorage.read();
-	}
-
-	@Override
-	public void save(Product product) {
-		if(product.getId() == null) {
-			productStorage.create(product);
-		} else {
-			productStorage.update(product);
+	public List<Product> findAll() throws LogicException {
+		try {
+			return productStorage.read();
+		} catch(StorageException e) {
+			throw new LogicException(e);
 		}
 	}
 
 	@Override
-	public void delete(Long id) {
-		productStorage.delete(id);
+	public void save(Product product) throws LogicException {
+		try {
+			if(product.getId() == null) {
+				productStorage.create(product);
+			} else {
+				productStorage.update(product);
+			}
+		} catch(StorageException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
+	public void delete(Long id) throws LogicException {
+		try {
+			productStorage.delete(id);
+		} catch(StorageException e) {
+			throw new LogicException(e);
+		}
 	}
 }

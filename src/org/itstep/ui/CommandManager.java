@@ -1,6 +1,7 @@
 package org.itstep.ui;
 
 import org.itstep.Factory;
+import org.itstep.logic.LogicException;
 import org.itstep.util.List;
 import org.itstep.util.Map;
 
@@ -27,7 +28,11 @@ public class CommandManager implements Command {
 				} else {
 					args = new String[] {};
 				}
-				command.exec(args);
+				try {
+					command.exec(args);
+				} catch(LogicException e) {
+					System.out.println("Команда не может быть выполнена");
+				}
 			} else {
 				System.out.println("Неизвестная команда");
 			}

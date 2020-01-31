@@ -47,7 +47,7 @@ public class Factory {
 			ProductServiceImpl service = new ProductServiceImpl();
 			productService = service;
 			service.setProductStorage(getProductStorage());
-			//*
+			/*
 			Product product;
 			product = new Product();
 			product.setCategory("канцтовары");

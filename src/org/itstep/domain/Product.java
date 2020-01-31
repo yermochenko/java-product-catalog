@@ -1,11 +1,17 @@
 package org.itstep.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Product {
+	public final SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+
 	private Long id;
 	private String category;
 	private String name;
 	private Long price;
 	private Integer amount;
+	private Date date;
 
 	public Long getId() {
 		return id;
@@ -46,12 +52,21 @@ public class Product {
 		this.amount = amount;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	@Override
 	public String toString() {
 		return "[" + id + "] "
 				+ category + " / "
 				+ name + ", $"
-				+ (price/100.0)+ ", "
-				+ amount + " шт.";
+				+ (price/100.0) + ", "
+				+ amount + " шт., "
+				+ FORMAT.format(date);
 	}
 }
