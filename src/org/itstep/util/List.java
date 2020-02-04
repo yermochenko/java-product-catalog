@@ -46,7 +46,7 @@ public class List<T> {
 		if(index < size) {
 			return (T)buffer[index];
 		} else {
-			return null; // TODO: обработать ошибку
+			throw new ArrayIndexOutOfBoundsException();
 		}
 	}
 
@@ -60,7 +60,7 @@ public class List<T> {
 		if(index < size) {
 			buffer[index] = object;
 		} else {
-			// TODO: обработать ошибку
+			throw new ArrayIndexOutOfBoundsException();
 		}
 	}
 
@@ -91,7 +91,7 @@ public class List<T> {
 			size--;
 			buffer[size] = null;
 		} else {
-			// TODO: обработать ошибку
+			throw new ArrayIndexOutOfBoundsException();
 		}
 	}
 }
