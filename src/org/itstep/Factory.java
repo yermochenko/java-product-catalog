@@ -1,6 +1,5 @@
 package org.itstep;
 
-import org.itstep.domain.Product;
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
 import org.itstep.storage.ProductStorage;

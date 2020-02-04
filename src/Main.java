@@ -1,8 +1,6 @@
 import java.util.Scanner;
 
-import org.itstep.domain.Product;
 import org.itstep.ui.CommandManager;
-import org.itstep.util.List;
 
 public class Main {
 	public static void main(String[] args) {
