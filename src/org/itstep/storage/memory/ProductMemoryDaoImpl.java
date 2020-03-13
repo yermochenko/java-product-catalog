@@ -1,11 +1,11 @@
 package org.itstep.storage.memory;
 
 import org.itstep.domain.Product;
-import org.itstep.storage.ProductStorage;
-import org.itstep.storage.StorageException;
+import org.itstep.storage.ProductDao;
+import org.itstep.storage.DaoException;
 import org.itstep.util.List;
 
-public class ProductMemoryStorageImpl implements ProductStorage {
+public class ProductMemoryDaoImpl implements ProductDao {
 	private List<Product> products = new List<>();
 	private Long lastCreatedId = 0L;
 
@@ -33,14 +33,14 @@ public class ProductMemoryStorageImpl implements ProductStorage {
 	}
 
 	@Override
-	public void update(Product product) throws StorageException {
+	public void update(Product product) throws DaoException {
 		for(int i = 0; i < products.size(); i++) {
 			if(products.get(i).getId().equals(product.getId())) {
 				products.set(i, product);
 				return;
 			}
 		}
-		throw new StorageException();
+		throw new DaoException();
 	}
 
 	@Override

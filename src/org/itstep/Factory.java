@@ -2,8 +2,8 @@ package org.itstep;
 
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
-import org.itstep.storage.ProductStorage;
-import org.itstep.storage.memory.ProductMemoryStorageImpl;
+import org.itstep.storage.ProductDao;
+import org.itstep.storage.memory.ProductMemoryDaoImpl;
 import org.itstep.ui.Command;
 import org.itstep.ui.ProductDeleteCommand;
 import org.itstep.ui.ProductListCommand;
@@ -71,10 +71,10 @@ public class Factory {
 		return productService;
 	}
 
-	private ProductStorage productStorage = null;
-	public ProductStorage getProductStorage() {
+	private ProductDao productStorage = null;
+	public ProductDao getProductStorage() {
 		if(productStorage == null) {
-			productStorage = new ProductMemoryStorageImpl();
+			productStorage = new ProductMemoryDaoImpl();
 		}
 		return productStorage;
 	}
