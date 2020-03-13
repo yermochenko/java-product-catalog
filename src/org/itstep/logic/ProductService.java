@@ -1,7 +1,8 @@
 package org.itstep.logic;
 
+import java.util.List;
+
 import org.itstep.domain.Product;
-import org.itstep.util.List;
 
 public interface ProductService {
 	List<Product> findAll() throws LogicException;

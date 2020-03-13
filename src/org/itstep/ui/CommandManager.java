@@ -1,13 +1,14 @@
 package org.itstep.ui;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.itstep.Factory;
 import org.itstep.logic.LogicException;
-import org.itstep.util.List;
-import org.itstep.util.Map;
 
 public class CommandManager implements Command {
 	private Factory factory = new Factory();
-	private Map<String, Command> commands = new Map<>();
+	private Map<String, Command> commands = new LinkedHashMap<>();
 
 	public CommandManager() {
 		commands.put("help", this);
@@ -42,9 +43,8 @@ public class CommandManager implements Command {
 	@Override
 	public void exec(String[] args) {
 		System.out.println("Доступны следующие команды:");
-		List<String> commands = this.commands.getKeys();
-		for(int i = 1; i < commands.size(); i++) {
-			System.out.println("\t" + commands.get(i));
+		for(String command : commands.keySet()) {
+			System.out.println("\t" + command);
 		}
 	}
 }

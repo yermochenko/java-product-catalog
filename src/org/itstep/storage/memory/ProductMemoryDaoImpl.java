@@ -1,12 +1,14 @@
 package org.itstep.storage.memory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductDao;
 import org.itstep.storage.DaoException;
-import org.itstep.util.List;
 
 public class ProductMemoryDaoImpl implements ProductDao {
-	private List<Product> products = new List<>();
+	private List<Product> products = new ArrayList<>();
 	private Long lastCreatedId = 0L;
 
 	@Override
@@ -47,7 +49,7 @@ public class ProductMemoryDaoImpl implements ProductDao {
 	public void delete(Long id) {
 		for(int i = 0; i < products.size(); i++) {
 			if(products.get(i).getId().equals(id)) {
-				products.del(i);
+				products.remove(i);
 				break;
 			}
 		}

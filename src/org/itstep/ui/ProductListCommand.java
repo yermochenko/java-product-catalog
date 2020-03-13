@@ -1,8 +1,9 @@
 package org.itstep.ui;
 
+import java.util.List;
+
 import org.itstep.domain.Product;
 import org.itstep.logic.LogicException;
-import org.itstep.util.List;
 
 public class ProductListCommand extends ProductCommand {
 	@Override

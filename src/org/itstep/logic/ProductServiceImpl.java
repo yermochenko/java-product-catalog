@@ -1,9 +1,10 @@
 package org.itstep.logic;
 
+import java.util.List;
+
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductDao;
 import org.itstep.storage.DaoException;
-import org.itstep.util.List;
 
 public class ProductServiceImpl implements ProductService {
 	private ProductDao productStorage;
