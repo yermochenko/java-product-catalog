@@ -3,23 +3,14 @@ package org.itstep.domain;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Product {
-	public final SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+public class Product extends Entity {
+	public static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
-	private Long id;
 	private String category;
 	private String name;
 	private Long price;
 	private Integer amount;
 	private Date date;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCategory() {
 		return category;
@@ -62,7 +53,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "[" + id + "] "
+		return "[" + getId() + "] "
 				+ category + " / "
 				+ name + ", $"
 				+ (price/100.0) + ", "

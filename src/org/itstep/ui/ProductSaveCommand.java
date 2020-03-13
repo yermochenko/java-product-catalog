@@ -29,11 +29,11 @@ public class ProductSaveCommand extends ProductCommand {
 							throw new NumberFormatException();
 						}
 						try {
-							product.setDate(product.FORMAT.parse(args[4 + offset]));
+							product.setDate(Product.FORMAT.parse(args[4 + offset]));
 							getProductService().save(product);
 							System.out.println("Данные успешно сохранены");
 						} catch(ParseException e) {
-							System.out.println("Дата " + args[4 + offset] + " должна соответствовать формату " + product.FORMAT.toPattern());
+							System.out.println("Дата " + args[4 + offset] + " должна соответствовать формату " + Product.FORMAT.toPattern());
 						}
 					} catch(NumberFormatException e) {
 						System.out.println("Количество " + args[3 + offset] + " должно быть целым неотрицательным числом");
