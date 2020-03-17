@@ -7,16 +7,16 @@ import org.itstep.storage.ProductDao;
 import org.itstep.storage.DaoException;
 
 public class ProductServiceImpl implements ProductService {
-	private ProductDao productStorage;
+	private ProductDao productDao;
 
-	public void setProductStorage(ProductDao productStorage) {
-		this.productStorage = productStorage;
+	public void setProductDao(ProductDao productDao) {
+		this.productDao = productDao;
 	}
 
 	@Override
 	public List<Product> findAll() throws LogicException {
 		try {
-			return productStorage.read();
+			return productDao.read();
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}
@@ -26,9 +26,9 @@ public class ProductServiceImpl implements ProductService {
 	public void save(Product product) throws LogicException {
 		try {
 			if(product.getId() == null) {
-				productStorage.create(product);
+				productDao.create(product);
 			} else {
-				productStorage.update(product);
+				productDao.update(product);
 			}
 		} catch(DaoException e) {
 			throw new LogicException(e);
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void delete(Long id) throws LogicException {
 		try {
-			productStorage.delete(id);
+			productDao.delete(id);
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}

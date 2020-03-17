@@ -7,7 +7,7 @@ import org.itstep.logic.LogicException;
 
 public class ProductSaveCommand extends ProductCommand {
 	@Override
-	public void exec(String[] args) throws LogicException {
+	public boolean exec(String[] args) throws LogicException {
 		if(args.length == 5 || args.length == 6) {
 			try {
 				Product product = new Product();
@@ -47,5 +47,6 @@ public class ProductSaveCommand extends ProductCommand {
 		} else {
 			System.out.println("Неверное количество аргументов");
 		}
+		return true;
 	}
 }

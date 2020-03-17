@@ -7,14 +7,15 @@ import org.itstep.logic.LogicException;
 
 public class ProductListCommand extends ProductCommand {
 	@Override
-	public void exec(String[] args) throws LogicException {
+	public boolean exec(String[] args) throws LogicException {
 		List<Product> products = getProductService().findAll();
 		if(products.size() > 0) {
-			for(int i = 0; i < products.size(); i++) {
-				System.out.println(products.get(i));
+			for(Product product : products) {
+				System.out.println(product);
 			}
 		} else {
 			System.out.println("Список товаров пуст");
 		}
+		return true;
 	}
 }

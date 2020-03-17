@@ -2,8 +2,8 @@ package org.itstep.ui;
 
 public class ExitCommand implements Command {
 	@Override
-	public void exec(String[] args) {
+	public boolean exec(String[] args) {
 		System.out.println("Всего доброго");
-		System.exit(0);
+		return false;
 	}
 }

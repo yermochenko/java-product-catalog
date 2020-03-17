@@ -1,17 +1,22 @@
 package org.itstep;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
 import org.itstep.storage.ProductDao;
-import org.itstep.storage.memory.ProductMemoryDaoImpl;
+import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.ui.Command;
 import org.itstep.ui.ProductDeleteCommand;
 import org.itstep.ui.ProductListCommand;
 import org.itstep.ui.ProductSaveCommand;
 
-public class Factory {
+public class Factory implements AutoCloseable {
 	private Command productDeleteCommand = null;
-	public Command getProductDeleteCommand() {
+	public Command getProductDeleteCommand() throws LogicException {
 		if(productDeleteCommand == null) {
 			ProductDeleteCommand command = new ProductDeleteCommand();
 			productDeleteCommand = command;
@@ -21,7 +26,7 @@ public class Factory {
 	}
 
 	private Command productListCommand = null;
-	public Command getProductListCommand() {
+	public Command getProductListCommand() throws LogicException {
 		if(productListCommand == null) {
 			ProductListCommand command = new ProductListCommand();
 			productListCommand = command;
@@ -31,7 +36,7 @@ public class Factory {
 	}
 
 	private Command productSaveCommand = null;
-	public Command getProductSaveCommand() {
+	public Command getProductSaveCommand() throws LogicException {
 		if(productSaveCommand == null) {
 			ProductSaveCommand command = new ProductSaveCommand();
 			productSaveCommand = command;
@@ -41,41 +46,39 @@ public class Factory {
 	}
 
 	private ProductService productService = null;
-	public ProductService getProductService() {
+	public ProductService getProductService() throws LogicException {
 		if(productService == null) {
 			ProductServiceImpl service = new ProductServiceImpl();
 			productService = service;
-			service.setProductStorage(getProductStorage());
-			/*
-			Product product;
-			product = new Product();
-			product.setCategory("канцтовары");
-			product.setName("Ручка");
-			product.setPrice(23L);
-			product.setAmount(15);
-			service.save(product);
-			product = new Product();
-			product.setCategory("канцтовары");
-			product.setName("Карандаш");
-			product.setPrice(12L);
-			product.setAmount(25);
-			service.save(product);
-			product = new Product();
-			product.setCategory("товары для кухни");
-			product.setName("Нож");
-			product.setPrice(123L);
-			product.setAmount(5);
-			service.save(product);
-			//*/
+			service.setProductDao(getProductDao());
 		}
 		return productService;
 	}
 
-	private ProductDao productStorage = null;
-	public ProductDao getProductStorage() {
-		if(productStorage == null) {
-			productStorage = new ProductMemoryDaoImpl();
+	private ProductDao productDao = null;
+	public ProductDao getProductDao() throws LogicException {
+		if(productDao == null) {
+			ProductDbDaoImpl productDaoImpl = new ProductDbDaoImpl();
+			productDao = productDaoImpl;
+			productDaoImpl.setConnection(getConnection());
 		}
-		return productStorage;
+		return productDao;
+	}
+
+	private Connection connection = null;
+	public Connection getConnection() throws LogicException {
+		if(connection == null) {
+			try {
+				connection = DriverManager.getConnection("jdbc:postgresql://localhost/store_db", "root", "root");
+			} catch(SQLException e) {
+				throw new LogicException(e);
+			}
+		}
+		return connection;
+	}
+
+	@Override
+	public void close() {
+		try { connection.close(); } catch(Exception e) {}
 	}
 }
