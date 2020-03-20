@@ -20,17 +20,36 @@ public class ProductDbDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public Long create(Product entity) throws DaoException {
-		// TODO Auto-generated method stub
-		return null;
+	public Long create(Product product) throws DaoException {
+		String sql = "INSERT INTO \"product\"(\"category\", \"name\", \"price\", \"amount\", \"date\") VALUES (?, ?, ?, ?, ?)";
+		PreparedStatement s = null;
+		ResultSet r = null;
+		try {
+			s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
+			s.setString(1, product.getCategory());
+			s.setString(2, product.getName());
+			s.setLong(3, product.getPrice());
+			s.setInt(4, product.getAmount());
+			s.setDate(5, new java.sql.Date(product.getDate().getTime()));
+			s.executeUpdate();
+			r = s.getGeneratedKeys(); // ПОЛУЧАЕМ сгенерированные ключи (не работает без Statement.RETURN_GENERATED_KEYS)
+			r.next();
+			return r.getLong(1);
+		} catch(SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			try { s.close(); } catch(Exception e) {}
+			try { r.close(); } catch(Exception e) {}
+		}
 	}
 
 	@Override
 	public Product read(Long id) throws DaoException {
+		String sql = "SELECT \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement("SELECT \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"id\" = ?");
+			s = c.prepareStatement(sql);
 			s.setLong(1, id);
 			r = s.executeQuery();
 			Product product = null;
@@ -54,9 +73,10 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public void update(Product product) throws DaoException {
+		String sql = "UPDATE \"product\" SET \"category\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement("UPDATE \"product\" SET \"category\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?");
+			s = c.prepareStatement(sql);
 			s.setString(1, product.getCategory());
 			s.setString(2, product.getName());
 			s.setLong(3, product.getPrice());
@@ -73,17 +93,27 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public void delete(Long id) throws DaoException {
-		// TODO Auto-generated method stub
-		
+		String sql = "DELETE FROM \"product\" WHERE \"id\" = ?";
+		PreparedStatement s = null;
+		try {
+			s = c.prepareStatement(sql);
+			s.setLong(1, id);
+			s.executeUpdate();
+		} catch(SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			try { s.close(); } catch(Exception e) {}
+		}
 	}
 
 	@Override
 	public List<Product> read() throws DaoException {
+		String sql = "SELECT \"id\", \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\"";
 		Statement s = null;
 		ResultSet r = null;
 		try {
 			s = c.createStatement();
-			r = s.executeQuery("SELECT \"id\", \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\"");
+			r = s.executeQuery(sql);
 			List<Product> products = new ArrayList<>();
 			while(r.next()) {
 				Product product = new Product();

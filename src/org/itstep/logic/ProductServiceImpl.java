@@ -26,7 +26,8 @@ public class ProductServiceImpl implements ProductService {
 	public void save(Product product) throws LogicException {
 		try {
 			if(product.getId() == null) {
-				productDao.create(product);
+				Long id = productDao.create(product);
+				product.setId(id);
 			} else {
 				productDao.update(product);
 			}

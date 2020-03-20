@@ -31,7 +31,7 @@ public class ProductSaveCommand extends ProductCommand {
 						try {
 							product.setDate(Product.FORMAT.parse(args[4 + offset]));
 							getProductService().save(product);
-							System.out.println("Данные успешно сохранены");
+							System.out.println("Данные успешно сохранены (ID = " + product.getId() + ")");
 						} catch(ParseException e) {
 							System.out.println("Дата " + args[4 + offset] + " должна соответствовать формату " + Product.FORMAT.toPattern());
 						}
