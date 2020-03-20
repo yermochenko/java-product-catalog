@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.ProductDao;
@@ -21,12 +22,12 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public Long create(Product product) throws DaoException {
-		String sql = "INSERT INTO \"product\"(\"category\", \"name\", \"price\", \"amount\", \"date\") VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO \"product\"(\"category_id\", \"name\", \"price\", \"amount\", \"date\") VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
 			s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
-			s.setString(1, product.getCategory());
+			s.setLong(1, product.getCategory().getId());
 			s.setString(2, product.getName());
 			s.setLong(3, product.getPrice());
 			s.setInt(4, product.getAmount());
@@ -45,7 +46,7 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public Product read(Long id) throws DaoException {
-		String sql = "SELECT \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"id\" = ?";
+		String sql = "SELECT \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
@@ -56,7 +57,8 @@ public class ProductDbDaoImpl implements ProductDao {
 			if(r.next()) {
 				product = new Product();
 				product.setId(id);
-				product.setCategory(r.getString("category"));
+				product.setCategory(new Category());
+				product.getCategory().setId(r.getLong("category_id"));
 				product.setName(r.getString("name"));
 				product.setPrice(r.getLong("price"));
 				product.setAmount(r.getInt("amount"));
@@ -73,11 +75,11 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public void update(Product product) throws DaoException {
-		String sql = "UPDATE \"product\" SET \"category\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?";
+		String sql = "UPDATE \"product\" SET \"category_id\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
 			s = c.prepareStatement(sql);
-			s.setString(1, product.getCategory());
+			s.setLong(1, product.getCategory().getId());
 			s.setString(2, product.getName());
 			s.setLong(3, product.getPrice());
 			s.setInt(4, product.getAmount());
@@ -108,7 +110,7 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> read() throws DaoException {
-		String sql = "SELECT \"id\", \"category\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\"";
+		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\"";
 		Statement s = null;
 		ResultSet r = null;
 		try {
@@ -118,7 +120,8 @@ public class ProductDbDaoImpl implements ProductDao {
 			while(r.next()) {
 				Product product = new Product();
 				product.setId(r.getLong("id"));
-				product.setCategory(r.getString("category"));
+				product.setCategory(new Category());
+				product.getCategory().setId(r.getLong("category_id"));
 				product.setName(r.getString("name"));
 				product.setPrice(r.getLong("price"));
 				product.setAmount(r.getInt("amount"));

@@ -2,21 +2,34 @@ package org.itstep.logic;
 
 import java.util.List;
 
+import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductDao;
+import org.itstep.storage.CategoryDao;
 import org.itstep.storage.DaoException;
 
 public class ProductServiceImpl implements ProductService {
 	private ProductDao productDao;
+	private CategoryDao categoryDao;
 
 	public void setProductDao(ProductDao productDao) {
 		this.productDao = productDao;
 	}
 
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+
 	@Override
 	public List<Product> findAll() throws LogicException {
 		try {
-			return productDao.read();
+			List<Product> products = productDao.read();
+			for(Product product : products) {
+				Category category = product.getCategory();
+				category = categoryDao.read(category.getId());
+				product.setCategory(category);
+			}
+			return products;
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}

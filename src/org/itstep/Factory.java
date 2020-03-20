@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
+import org.itstep.storage.CategoryDao;
 import org.itstep.storage.ProductDao;
+import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.ui.Command;
 import org.itstep.ui.ProductDeleteCommand;
@@ -51,6 +53,7 @@ public class Factory implements AutoCloseable {
 			ProductServiceImpl service = new ProductServiceImpl();
 			productService = service;
 			service.setProductDao(getProductDao());
+			service.setCategoryDao(getCategoryDao());
 		}
 		return productService;
 	}
@@ -63,6 +66,16 @@ public class Factory implements AutoCloseable {
 			productDaoImpl.setConnection(getConnection());
 		}
 		return productDao;
+	}
+
+	private CategoryDao categoryDao = null;
+	public CategoryDao getCategoryDao() throws LogicException {
+		if(categoryDao == null) {
+			CategoryDbDaoImpl categoryDaoImpl = new CategoryDbDaoImpl();
+			categoryDao = categoryDaoImpl;
+			categoryDaoImpl.setConnection(getConnection());
+		}
+		return categoryDao;
 	}
 
 	private Connection connection = null;
