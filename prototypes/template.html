@@ -9,10 +9,11 @@
 		<div class="wrapper">
 			<div class="header">
 				<ul class="main-menu">
-					<li class="main-menu__item">abc</li>
-					<li class="main-menu__item">def</li>
-					<li class="main-menu__item">ghi</li>
-					<li class="main-menu__item">jkl</li>
+					<li class="main-menu__item"><span class="main-menu__item_current">current</span></li>
+					<li class="main-menu__item"><a href="#" class="main-menu__item_link">abc</a></li>
+					<li class="main-menu__item"><a href="#" class="main-menu__item_link">def</a></li>
+					<li class="main-menu__item"><a href="#" class="main-menu__item_link">ghi</a></li>
+					<li class="main-menu__item"><a href="#" class="main-menu__item_link">jkl</a></li>
 					<li class="end"></li>
 				</ul>
 				<h1 class="site-title">Интернет-магазин &laquo;Всякая всячина&raquo;</h1>
@@ -47,6 +48,17 @@
 							<td class="table__cell_numeric">8.9</td>
 						</tr>
 					</table>
+					<form class="form" action="save.html" style="width: 600px">
+						<label class="form__label" for="name">Имя:</label>
+						<input type="text" name="name" value="Иван" id="name" class="form__text-input">
+						<label class="form__label" for="surname">Фамилия:</label>
+						<input type="text" name="surname" value="Петров" id="surname" class="form__text-input">
+						<div class="form__input">
+							<input type="checkbox" name="subscribe" value="true" id="subscribe">
+							<label for="subscribe">Подписка на рассылку</label>
+						</div>
+						<button type="submit" class="form__button">Сохранить</button>
+					</form>
 				</div>
 			</div>
 			<div class="pusher end"></div>
