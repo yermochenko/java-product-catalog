@@ -10,10 +10,10 @@
 			<div class="header">
 				<ul class="main-menu">
 					<li class="main-menu__item"><span class="main-menu__item_current">current</span></li>
-					<li class="main-menu__item"><a href="#" class="main-menu__item_link">abc</a></li>
-					<li class="main-menu__item"><a href="#" class="main-menu__item_link">def</a></li>
-					<li class="main-menu__item"><a href="#" class="main-menu__item_link">ghi</a></li>
-					<li class="main-menu__item"><a href="#" class="main-menu__item_link">jkl</a></li>
+					<li class="main-menu__item"><a class="main-menu__item_link" href="#">abc</a></li>
+					<li class="main-menu__item"><a class="main-menu__item_link" href="#">def</a></li>
+					<li class="main-menu__item"><a class="main-menu__item_link" href="#">ghi</a></li>
+					<li class="main-menu__item"><a class="main-menu__item_link" href="#">jkl</a></li>
 					<li class="end"></li>
 				</ul>
 				<h1 class="site-title">Интернет-магазин &laquo;Всякая всячина&raquo;</h1>
@@ -50,14 +50,16 @@
 					</table>
 					<form class="form" action="save.html" style="width: 600px">
 						<label class="form__label" for="name">Имя:</label>
-						<input type="text" name="name" value="Иван" id="name" class="form__text-input">
+						<input class="form__text-input" id="name" type="text" name="name" value="Иван">
 						<label class="form__label" for="surname">Фамилия:</label>
-						<input type="text" name="surname" value="Петров" id="surname" class="form__text-input">
+						<input class="form__text-input" id="surname" type="text" name="surname" value="Петров">
 						<div class="form__input">
-							<input type="checkbox" name="subscribe" value="true" id="subscribe">
+							<input id="subscribe" type="checkbox" name="subscribe" value="true">
 							<label for="subscribe">Подписка на рассылку</label>
 						</div>
-						<button type="submit" class="form__button">Сохранить</button>
+						<button class="form__button" type="submit">Сохранить</button>
+						<button class="form__button_danger" type="button">Удалить</button>
+						<button class="form__button" type="button">Отмена</button>
 					</form>
 				</div>
 			</div>
