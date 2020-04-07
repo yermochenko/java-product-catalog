@@ -50,16 +50,33 @@
 					</table>
 					<form class="form" action="save.html" style="width: 600px">
 						<label class="form__label" for="name">Имя:</label>
-						<input class="form__text-input" id="name" type="text" name="name" value="Иван">
+						<input class="form__text-input" id="name" type="text" name="name" placeholder="Имя" value="Иван">
 						<label class="form__label" for="surname">Фамилия:</label>
-						<input class="form__text-input" id="surname" type="text" name="surname" value="Петров">
+						<input class="form__text-input" id="surname" type="text" name="surname" placeholder="Фамилия" value="Петров">
+						<div>Пол:</div>
 						<div class="form__input">
-							<input id="subscribe" type="checkbox" name="subscribe" value="true">
+							<input id="sex-male" type="radio" name="sex" value="male">
+							<label for="sex-male">мужской</label>
+						</div>
+						<div class="form__input">
+							<input id="sex-female" type="radio" name="sex" value="female" checked>
+							<label for="sex-female">женский</label>
+						</div>
+						<label class="form__label" for="theme">Тема интерфейса:</label>
+						<select class="form__text-input" id="theme" name="theme">
+							<option value="light">Светлая</option>
+							<option value="dark">Тёмная</option>
+							<option value="pink" selected>Розовая</option>
+						</select>
+						<label class="form__label" for="about">О себе:</label>
+						<textarea class="form__text-input" id="about" name="about" rows="4"></textarea>
+						<div class="form__input">
+							<input id="subscribe" type="checkbox" name="subscribe" value="true" checked>
 							<label for="subscribe">Подписка на рассылку</label>
 						</div>
 						<button class="form__button" type="submit">Сохранить</button>
 						<button class="form__button_danger" type="button">Удалить</button>
-						<button class="form__button" type="button">Отмена</button>
+						<button id="button-cancel" class="form__button" type="button">Отмена</button>
 					</form>
 				</div>
 			</div>
