@@ -4,6 +4,22 @@
 		<meta charset="UTF-8">
 		<title>Интернет-магазин &laquo;Всякая всячина&raquo;</title>
 		<link rel="stylesheet" href="main.css" type="text/css">
+		<!--script type="text/javascript">
+			window.onload = function() {
+				var b = document.getElementById('button-cancel');
+				if(b) {
+					b.onclick = function() {
+						var s = 'рама мыла маму';
+						for(var i = 4; i <= 7; i++) {
+							console.log(s + i);
+						}
+					};
+					console.log('OK');
+				} else {
+					console.log('ERROR');
+				}
+			};
+		</script-->
 	</head>
 	<body>
 		<div class="wrapper">
@@ -83,5 +99,21 @@
 			<div class="pusher end"></div>
 		</div>
 		<div class="footer">&copy; Интернет-магазин &laquo;Всякая всячина&raquo;</div>
+		<script type="text/javascript">
+			var buttonCancelHandler = function() {
+				var s = 'рама мыла маму';
+				for(var i = 4; i <= 7; i++) {
+					console.log(s + i);
+				}
+			};
+
+			var buttonCancel = document.getElementById('button-cancel');
+			if(buttonCancel) {
+				buttonCancel.onclick = buttonCancelHandler;
+				console.log('OK');
+			} else {
+				console.log('ERROR');
+			}
+		</script>
 	</body>
 </html>
