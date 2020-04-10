@@ -227,6 +227,22 @@ html, body {
 	background: #FF6666;
 }
 
+.popup {
+	margin: 5px;
+	padding: 5px;
+	background-color: #CCFFCC;
+	border: 1px solid #66FF66;
+	border-radius: 5px;
+}
+
+.popup_danger {
+	margin: 5px;
+	padding: 5px;
+	background-color: #FFCCCC;
+	border: 1px solid #FF6666;
+	border-radius: 5px;
+}
+
 .wrapper {
 	min-height: 100%;
 	margin-bottom: -50px;
