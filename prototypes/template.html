@@ -36,7 +36,15 @@
 			</div>
 			<div class="side">
 				<div class="side-content">
-					Боковое меню
+					<h2 class="page-title">Врезка</h2>
+					<form class="form">
+						<label class="form__label" for="number-a">Число A:</label>
+						<input class="form__text-input" id="number-a" name="numberA" type="number">
+						<label class="form__label" for="number-b">Число B:</label>
+						<input class="form__text-input" id="number-b" name="numberB" type="number">
+						<button id="button-ok" class="form__button" type="button">OK</button>
+						<button id="button-test" class="form__button" type="button">test</button>
+					</form>
 				</div>
 			</div>
 			<div class="main">
@@ -92,28 +100,13 @@
 						</div>
 						<button class="form__button" type="submit">Сохранить</button>
 						<button class="form__button_danger" type="button">Удалить</button>
-						<button id="button-cancel" class="form__button" type="button">Отмена</button>
+						<button class="form__button" type="button">Отмена</button>
 					</form>
 				</div>
 			</div>
 			<div class="pusher end"></div>
 		</div>
 		<div class="footer">&copy; Интернет-магазин &laquo;Всякая всячина&raquo;</div>
-		<script type="text/javascript">
-			var buttonCancelHandler = function() {
-				var s = 'рама мыла маму';
-				for(var i = 4; i <= 7; i++) {
-					console.log(s + i);
-				}
-			};
-
-			var buttonCancel = document.getElementById('button-cancel');
-			if(buttonCancel) {
-				buttonCancel.onclick = buttonCancelHandler;
-				console.log('OK');
-			} else {
-				console.log('ERROR');
-			}
-		</script>
+		<script type="text/javascript" src="program.js"></script>
 	</body>
 </html>
