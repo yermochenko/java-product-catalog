@@ -28,6 +28,16 @@
         <url-pattern>/product/list.html</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>ProductListViewServlet</servlet-name>
+      <servlet-class>org.itstep.web.ProductListViewServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductListViewServlet</servlet-name>
+        <url-pattern>/WEB-INF/product/list.html</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
