@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- copy this file into tomcat\conf\Catalina\localhost -->
+<Context path="/test" docBase="workspace/java-product-catalog/web" disableURLRewriting="true"/>
+<!-- 
+    path="/test" - часть URL приложения
+    docBase="workspace/java-product-catalog/web" - путь к папке web внутри проекта в workspace Eclipse
+-->
