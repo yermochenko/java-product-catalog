@@ -29,7 +29,7 @@ public class ProductListServlet extends HttpServlet {
 			ProductService service = factory.getProductService();
 			List<Product> products = service.findAll();
 			req.setAttribute("products", products);
-			req.getRequestDispatcher("/WEB-INF/product/list.html").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/jsp/product/list.jsp").forward(req, resp);
 		} catch(LogicException e) {
 			throw new ServletException(e);
 		}
