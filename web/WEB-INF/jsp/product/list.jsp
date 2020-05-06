@@ -27,5 +27,6 @@
 			</c:forEach>
 		</table>
 		<p>Итого ${products.size()} товаров</p>
+		<p><a href="add.html">Добавить</a></p>
 	</body>
 </html>

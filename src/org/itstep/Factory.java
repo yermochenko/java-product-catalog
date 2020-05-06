@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.itstep.logic.CategoryService;
+import org.itstep.logic.CategoryServiceImpl;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
@@ -45,6 +47,16 @@ public class Factory implements AutoCloseable {
 			command.setProductService(getProductService());
 		}
 		return productSaveCommand;
+	}
+
+	private CategoryService categoryService = null;
+	public CategoryService getCategoryService() throws LogicException {
+		if(categoryService == null) {
+			CategoryServiceImpl service = new CategoryServiceImpl();
+			categoryService = service;
+			service.setCategoryDao(getCategoryDao());
+		}
+		return categoryService;
 	}
 
 	private ProductService productService = null;

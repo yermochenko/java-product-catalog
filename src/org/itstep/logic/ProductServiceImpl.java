@@ -1,5 +1,6 @@
 package org.itstep.logic;
 
+import java.util.Date;
 import java.util.List;
 
 import org.itstep.domain.Category;
@@ -38,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void save(Product product) throws LogicException {
 		try {
+			product.setDate(new Date());
 			if(product.getId() == null) {
 				Long id = productDao.create(product);
 				product.setId(id);

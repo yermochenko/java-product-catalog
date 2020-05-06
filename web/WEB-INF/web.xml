@@ -28,6 +28,26 @@
         <url-pattern>/product/list.html</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>ProductAddServlet</servlet-name>
+      <servlet-class>org.itstep.web.ProductAddServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductAddServlet</servlet-name>
+        <url-pattern>/product/add.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>ProductSaveServlet</servlet-name>
+      <servlet-class>org.itstep.web.ProductSaveServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductSaveServlet</servlet-name>
+        <url-pattern>/product/save.html</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
