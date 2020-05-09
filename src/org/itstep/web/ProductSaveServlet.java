@@ -15,7 +15,7 @@ import org.itstep.logic.ProductService;
 
 public class ProductSaveServlet extends HttpServlet {
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			String name = req.getParameter("name");
 			if(name == null || name.isBlank()) {
@@ -39,7 +39,7 @@ public class ProductSaveServlet extends HttpServlet {
 			try(Factory factory = new Factory()) {
 				ProductService service = factory.getProductService();
 				service.save(product);
-				req.getRequestDispatcher("/product/list.html").forward(req, resp);
+				resp.sendRedirect(req.getContextPath() + "/product/list.html");
 			} catch(LogicException e) {
 				throw new ServletException(e);
 			}

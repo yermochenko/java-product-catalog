@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<h1 style="color: green">New product</h1>
-		<form action="save.html" method="get">
+		<form action="save.html" method="post">
 			<label for="category">Категория:</label>
 			<br>
 			<select id="category" name="category">
