@@ -15,15 +15,6 @@ import org.itstep.logic.ProductService;
 
 public class ProductListServlet extends HttpServlet {
 	@Override
-	public void init() throws ServletException {
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch(ClassNotFoundException e) {
-			throw new ServletException(e);
-		}
-	}
-
-	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try(Factory factory = new Factory()) {
 			ProductService service = factory.getProductService();
