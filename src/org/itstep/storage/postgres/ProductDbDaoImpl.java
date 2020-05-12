@@ -110,7 +110,7 @@ public class ProductDbDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> read() throws DaoException {
-		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\"";
+		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" ORDER BY \"name\"";
 		Statement s = null;
 		ResultSet r = null;
 		try {
