@@ -37,6 +37,19 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public Product findById(Long id) throws LogicException {
+		try {
+			Product product = productDao.read(id);
+			Category category = product.getCategory();
+			category = categoryDao.read(category.getId());
+			product.setCategory(category);
+			return product;
+		} catch(DaoException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
 	public void save(Product product) throws LogicException {
 		try {
 			product.setDate(new Date());
@@ -52,9 +65,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void delete(Long id) throws LogicException {
+	public void delete(List<Long> ids) throws LogicException {
 		try {
-			productDao.delete(id);
+			for(Long id : ids) {
+				productDao.delete(id);
+			}
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}

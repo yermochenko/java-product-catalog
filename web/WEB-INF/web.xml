@@ -29,13 +29,13 @@
     </servlet-mapping>
 
     <servlet>
-      <servlet-name>ProductAddServlet</servlet-name>
-      <servlet-class>org.itstep.web.ProductAddServlet</servlet-class>
+      <servlet-name>ProductEditServlet</servlet-name>
+      <servlet-class>org.itstep.web.ProductEditServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ProductAddServlet</servlet-name>
-        <url-pattern>/product/add.html</url-pattern>
+        <servlet-name>ProductEditServlet</servlet-name>
+        <url-pattern>/product/edit.html</url-pattern>
     </servlet-mapping>
 
     <servlet>
