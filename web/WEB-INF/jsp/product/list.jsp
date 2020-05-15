@@ -1,44 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Products list</title>
-	</head>
-	<body>
-		<h1 style="color: green">Products list</h1>
-		<c:url var="deleteUrl" value="/product/delete.html"/>
-		<form action="${deleteUrl}" method="post">
-		<table border="1">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
+
+<u:page title="Список товаров">
+	<c:url var="deleteUrl" value="/product/delete.html"/>
+	<form action="${deleteUrl}" method="post">
+		<table class="table">
 			<tr>
-				<th></th>
-				<th>Категория</th>
-				<th>Название</th>
-				<th>Цена</th>
-				<th>Количество</th>
-				<th>Дата добавления</th>
-				<th></th>
+				<th class="table__header"></th>
+				<th class="table__header">Категория</th>
+				<th class="table__header">Название</th>
+				<th class="table__header">Цена</th>
+				<th class="table__header">Количество</th>
+				<th class="table__header">Дата добавления</th>
+				<th class="table__header"></th>
 			</tr>
 			<c:forEach var="product" items="${products}">
 			<tr>
-				<td><input type="checkbox" name="id" value="${product.id}"></td>
-				<td>${product.category.name}</td>
-				<td>${product.name}</td>
-				<td>${product.price} коп.</td>
-				<td>${product.amount} шт.</td>
-				<td>${product.date}</td>
+				<td class="table__cell"><input type="checkbox" name="id" value="${product.id}"></td>
+				<td class="table__cell">${product.category.name}</td>
+				<td class="table__cell">${product.name}</td>
+				<td class="table__cell_numeric">${product.price} коп.</td>
+				<td class="table__cell_numeric">${product.amount} шт.</td>
+				<td class="table__cell"><fmt:formatDate value="${product.date}" pattern="dd.MM.yyyy"/></td>
 				<c:url var="editUrl" value="/product/edit.html">
 					<c:param name="id" value="${product.id}"/>
 				</c:url>
-				<td><a href="${editUrl}">Редактировать</a></td>
+				<td class="table__cell"><a href="${editUrl}">Редактировать</a></td>
 			</tr>
 			</c:forEach>
 		</table>
-		<p>Итого ${products.size()} товаров</p>
+		<p>Итого ${fn:length(products)} товаров</p>
 		<c:url var="editUrl" value="/product/edit.html"/>
-		<p><a href="${editUrl}">Добавить</a></p>
-		<p><button type="submit">Удалить</button></p>
-		</form>
-	</body>
-</html>
+		<a href="${editUrl}" class="form__button">Добавить</a>
+		<button type="submit" class="form__button_danger">Удалить</button>
+	</form>
+</u:page>

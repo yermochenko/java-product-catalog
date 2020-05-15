@@ -1,0 +1,266 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+}
+
+.header {
+	background: #CCFFCC;
+	height: 100px;
+	padding: 0;
+	margin: 0;
+}
+
+.site-title {
+	margin: 0;
+	padding: 0 20px;
+	line-height: 40px;
+	font-size: 30px;
+	font-style: italic;
+	font-family: serif;
+}
+
+.main-menu {
+	padding: 0;
+	margin: 70px 0 0 0;
+	list-style: none;
+	float: right;
+	border-right: 10px solid #CCFFCC;
+}
+
+.main-menu__item {
+	border-left: 5px solid #CCFFCC;
+	float: left;
+	height: 30px;
+	font-family: monospace;
+	font-size: 12pt;
+	text-align: center;
+	line-height: 30px;
+	background: #88FF88;
+}
+
+.main-menu__item_current, .main-menu__item_link {
+	display: block;
+	padding: 0 20px;
+}
+
+.main-menu__item_current {
+	font-weight: bold;
+	background: #AAFFAA;
+}
+
+.main-menu__item_link {
+	color: black;
+	text-decoration: none;
+}
+
+.main-menu__item_link:hover {
+	background: #66FF66;
+}
+
+.side {
+	float: left;
+	width: 25%;
+}
+
+.side-content {
+	border-right: 5px dotted #CCFFCC;
+	border-bottom: 5px dotted #CCFFCC;
+}
+
+.categories {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+.categories__item {
+	padding: 20px;
+}
+
+.categories__item:before {
+	color: #CCFFCC;
+	content: '●';
+	padding-right: 5px;
+}
+
+.categories__item:hover {
+	background: #66FF66;
+	cursor: pointer;
+}
+
+.main {
+	float: right;
+	width: 75%;
+}
+
+.main-content {
+	padding: 20px;
+}
+
+.page-title {
+	margin: 0 0 20px 0;
+}
+
+.product {
+	float: left;
+	margin: 0 20px 20px 0;
+	padding: 0 20px 20px 0;
+	width: 400px;
+	height: 250px;
+	border-right: 5px dotted #CCFFCC;
+	border-bottom: 5px dotted #CCFFCC;
+}
+
+.product__title {
+	margin: 0;
+	padding: 5px 20px;
+	height: 20px;
+	line-height: 20px;
+	background: #CCFFCC;
+}
+
+.product__photo {
+	float: left;
+	margin: 5px;
+	width: 150px;
+	height: 150px;
+}
+
+.product__price {
+	margin: 5px 0;
+	height: 20px;
+	line-height: 20px;
+	font-weight: bold;
+	color: red;
+}
+
+.product__description {
+	height: 160px;
+	overflow: hidden;
+}
+
+.product__button-add {
+	display: block;
+	float: right;
+	margin: 0;
+	padding: 0 20px;
+	background: #88FF88;
+	color: black;
+	height: 30px;
+	line-height: 30px;
+	font-family: monospace;
+	font-size: 12pt;
+	text-decoration: none;
+}
+
+.product__button-add:hover {
+	background: #66FF66;
+}
+
+.table {
+	border-collapse: collapse;
+}
+
+.table__header, .table__cell, .table__cell_numeric {
+	border: 1px solid black;
+}
+
+.table__header {
+	padding: 10px 20px;
+	background: #CCFFCC;
+}
+
+.table__cell {
+	padding: 10px 20px 10px 10px;
+}
+
+.table__cell_numeric {
+	text-align: center;
+	padding: 10px 20px;
+}
+
+.form {
+	background: #CCFFCC;
+	padding: 20px;
+}
+
+.form__text-input, .form__input {
+	margin: 5px 0 20px 0;
+}
+
+.form__label, .form__text-input {
+	display: block;
+}
+
+.form__text-input {
+	box-sizing: border-box;
+	padding: 10px 20px;
+	border-size: 1px;
+	width: 100%;
+	border-radius: 10px;
+}
+
+.form__button, .form__button_danger {
+	display: inline-block;
+	color: black;
+	text-decoration: none;
+	padding: 0 20px;
+	border: 0;
+	height: 30px;
+	line-height: 30px;
+	font-family: monospace;
+	font-size: 12pt;
+	cursor: pointer;
+}
+
+.form__button {
+	background: #88FF88;
+}
+
+.form__button:hover {
+	background: #66FF66;
+}
+
+.form__button_danger {
+	background: #FF8888;
+}
+
+.form__button_danger:hover {
+	background: #FF6666;
+}
+
+.popup {
+	margin: 5px;
+	padding: 5px;
+	background-color: #CCFFCC;
+	border: 1px solid #66FF66;
+	border-radius: 5px;
+}
+
+.popup_danger {
+	margin: 5px;
+	padding: 5px;
+	background-color: #FFCCCC;
+	border: 1px solid #FF6666;
+	border-radius: 5px;
+}
+
+.wrapper {
+	min-height: 100%;
+	margin-bottom: -50px;
+}
+
+.footer, .pusher {
+	height: 50px;
+}
+
+.footer {
+	background: #CCFFCC;
+	line-height: 50px;
+	padding: 0 10px;
+}
+
+.end {
+	clear: both;
+}
