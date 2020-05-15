@@ -16,6 +16,7 @@ import org.itstep.logic.ProductService;
 public class ProductListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("\n" + req.getParameterValues("id") + "\n");
 		try(Factory factory = new Factory()) {
 			ProductService service = factory.getProductService();
 			List<Product> products = service.findAll();

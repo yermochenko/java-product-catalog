@@ -48,6 +48,16 @@
         <url-pattern>/product/save.html</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>ProductDeleteServlet</servlet-name>
+      <servlet-class>org.itstep.web.ProductDeleteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductDeleteServlet</servlet-name>
+        <url-pattern>/product/delete.html</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>org.itstep.web.EncodingFilter</filter-class>
