@@ -15,3 +15,11 @@ INSERT INTO "product"
 (3   , 1             , 'Нож'         , 345    , 30      , '2020-03-13'),
 (4   , 2             , 'Бритва'      , 456    , 5       , '2020-03-13');
 SELECT setval('product_id_seq', 4);
+
+INSERT INTO "user"
+--------------------------------------------
+("id", "login"  , "password", "role") VALUES
+--------------------------------------------
+(1   , 'root'   , 'root'    , 0     ),
+(2   , 'manager', 'manager' , 1     );
+SELECT setval('user_id_seq', 2);
