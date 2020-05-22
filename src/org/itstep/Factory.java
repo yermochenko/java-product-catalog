@@ -9,10 +9,14 @@ import org.itstep.logic.CategoryServiceImpl;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
 import org.itstep.logic.ProductServiceImpl;
+import org.itstep.logic.UserService;
+import org.itstep.logic.UserServiceImpl;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.ProductDao;
+import org.itstep.storage.UserDao;
 import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
+import org.itstep.storage.postgres.UserDbDaoImpl;
 import org.itstep.ui.Command;
 import org.itstep.ui.ProductDeleteCommand;
 import org.itstep.ui.ProductListCommand;
@@ -70,6 +74,16 @@ public class Factory implements AutoCloseable {
 		return productService;
 	}
 
+	private UserService userService = null;
+	public UserService getUserService() throws LogicException {
+		if(userService == null) {
+			UserServiceImpl service = new UserServiceImpl();
+			userService = service;
+			service.setUserDao(getUserDao());
+		}
+		return userService;
+	}
+
 	private ProductDao productDao = null;
 	public ProductDao getProductDao() throws LogicException {
 		if(productDao == null) {
@@ -80,6 +94,7 @@ public class Factory implements AutoCloseable {
 		return productDao;
 	}
 
+
 	private CategoryDao categoryDao = null;
 	public CategoryDao getCategoryDao() throws LogicException {
 		if(categoryDao == null) {
@@ -88,6 +103,16 @@ public class Factory implements AutoCloseable {
 			categoryDaoImpl.setConnection(getConnection());
 		}
 		return categoryDao;
+	}
+
+	private UserDao userDao = null;
+	public UserDao getUserDao() throws LogicException {
+		if(userDao == null) {
+			UserDbDaoImpl userDaoImpl = new UserDbDaoImpl();
+			userDao = userDaoImpl;
+			userDaoImpl.setConnection(getConnection());
+		}
+		return userDao;
 	}
 
 	private Connection connection = null;

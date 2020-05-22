@@ -9,13 +9,23 @@
     <display-name>My First Web-Application "Test"</display-name>
 
     <servlet>
-      <servlet-name>TestServlet</servlet-name>
-      <servlet-class>org.itstep.test.TestServlet</servlet-class>
+      <servlet-name>MainServlet</servlet-name>
+      <servlet-class>org.itstep.test.MainServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
+        <servlet-name>MainServlet</servlet-name>
         <url-pattern>/index.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>LoginServlet</servlet-name>
+      <servlet-class>org.itstep.web.LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login.html</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -64,6 +74,15 @@
     </filter>
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>SequrityFilter</filter-name>
+        <filter-class>org.itstep.web.SequrityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SequrityFilter</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
 

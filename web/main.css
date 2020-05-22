@@ -102,6 +102,13 @@ html, body {
 	margin: 0 0 20px 0;
 }
 
+.message {
+	background: #FFCCCC;
+	border: 1px solid #FF6666;
+	padding: 10px;
+	margin: 10px 0;
+}
+
 .product {
 	float: left;
 	margin: 0 20px 20px 0;
