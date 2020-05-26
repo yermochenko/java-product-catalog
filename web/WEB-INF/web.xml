@@ -8,9 +8,14 @@
 
     <display-name>My First Web-Application "Test"</display-name>
 
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
     <servlet>
       <servlet-name>MainServlet</servlet-name>
-      <servlet-class>org.itstep.test.MainServlet</servlet-class>
+      <servlet-class>org.itstep.web.MainServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -26,6 +31,16 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>LogoutServlet</servlet-name>
+      <servlet-class>org.itstep.web.LogoutServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout.html</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -88,6 +103,10 @@
 
     <listener>
         <listener-class>org.itstep.web.ApplicationInitializer</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.itstep.web.AuthorizationLogger</listener-class>
     </listener>
 
     <welcome-file-list>

@@ -19,7 +19,14 @@
 	<body>
 		<div class="wrapper">
 			<div class="header">
-				<!-- TODO: add main menu -->
+				<c:if test="${not empty sessionUser}">
+					<ul class="main-menu">
+						<!-- TODO: add main menu -->
+						<c:url var="logoutUrl" value="/logout.html"/>
+						<li class="main-menu__item"><a class="main-menu__item_link" href="${logoutUrl}">выход</a></li>
+						<li class="end"></li>
+					</ul>
+				</c:if>
 				<h1 class="site-title">Интернет-магазин &laquo;Всякая всячина&raquo;</h1>
 			</div>
 			<!-- TODO: add side block -->

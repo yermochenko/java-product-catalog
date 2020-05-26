@@ -1,4 +1,4 @@
-package org.itstep.test;
+package org.itstep.web;
 
 import java.io.IOException;
 

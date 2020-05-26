@@ -40,6 +40,9 @@ public class SequrityFilter implements Filter {
 		accessURLs.put(Role.COURIER, couriesURLs);
 		Set<String> clientURLs = new HashSet<>();
 		accessURLs.put(Role.CLIENT, clientURLs);
+		for(Set<String> userURLs : accessURLs.values()) {
+			userURLs.add("/logout.html");
+		}
 	}
 
 	@Override
@@ -53,9 +56,11 @@ public class SequrityFilter implements Filter {
 			HttpSession session = request.getSession(false);
 			if(session != null) {
 				User user = (User)session.getAttribute("sessionUser");
-				Set<String> urls = accessURLs.get(user.getRole());
-				if(urls.contains(uri)) {
-					access = true;
+				if(user != null) {
+					Set<String> urls = accessURLs.get(user.getRole());
+					if(urls.contains(uri)) {
+						access = true;
+					}
 				}
 			}
 		} else {
