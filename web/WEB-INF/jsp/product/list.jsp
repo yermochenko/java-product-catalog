@@ -28,7 +28,7 @@
 				<c:url var="editUrl" value="/product/edit.html">
 					<c:param name="id" value="${product.id}"/>
 				</c:url>
-				<td class="table__cell"><a href="${editUrl}">Редактировать</a></td>
+				<td class="table__cell"><a href="${editUrl}" class="form__button">Редактировать</a></td>
 			</tr>
 			</c:forEach>
 		</table>
