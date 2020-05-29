@@ -40,9 +40,11 @@ public class ProductServiceImpl implements ProductService {
 	public Product findById(Long id) throws LogicException {
 		try {
 			Product product = productDao.read(id);
-			Category category = product.getCategory();
-			category = categoryDao.read(category.getId());
-			product.setCategory(category);
+			if(product != null) {
+				Category category = product.getCategory();
+				category = categoryDao.read(category.getId());
+				product.setCategory(category);
+			}
 			return product;
 		} catch(DaoException e) {
 			throw new LogicException(e);
