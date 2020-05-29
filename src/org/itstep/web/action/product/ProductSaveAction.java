@@ -1,21 +1,16 @@
-package org.itstep.web;
+package org.itstep.web.action.product;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.itstep.Factory;
 import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.logic.LogicException;
-import org.itstep.logic.ProductService;
+import org.itstep.web.action.ActionException;
 
-public class ProductSaveServlet extends HttpServlet {
+public class ProductSaveAction extends BaseProductAction {
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
 		try {
 			String id = req.getParameter("id");
 			String name = req.getParameter("name");
@@ -40,15 +35,10 @@ public class ProductSaveServlet extends HttpServlet {
 			if(product.getAmount() <= 0) {
 				throw new IllegalArgumentException();
 			}
-			try(Factory factory = new Factory()) {
-				ProductService service = factory.getProductService();
-				service.save(product);
-				resp.sendRedirect(req.getContextPath() + "/product/list.html");
-			} catch(LogicException e) {
-				throw new ServletException(e);
-			}
+			getProductService().save(product);
+			return new Result("/product/list");
 		} catch(IllegalArgumentException e) {
-			resp.sendError(400);
+			throw new ActionException(e, 400);
 		}
 	}
 }

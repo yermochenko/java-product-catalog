@@ -3,6 +3,8 @@ package org.itstep;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.itstep.logic.CategoryService;
 import org.itstep.logic.CategoryServiceImpl;
@@ -17,40 +19,102 @@ import org.itstep.storage.UserDao;
 import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.storage.postgres.UserDbDaoImpl;
-import org.itstep.ui.Command;
-import org.itstep.ui.ProductDeleteCommand;
-import org.itstep.ui.ProductListCommand;
-import org.itstep.ui.ProductSaveCommand;
+import org.itstep.web.action.Action;
+import org.itstep.web.action.LoginAction;
+import org.itstep.web.action.LogoutAction;
+import org.itstep.web.action.MainAction;
+import org.itstep.web.action.product.ProductDeleteAction;
+import org.itstep.web.action.product.ProductEditAction;
+import org.itstep.web.action.product.ProductListAction;
+import org.itstep.web.action.product.ProductSaveAction;
 
 public class Factory implements AutoCloseable {
-	private Command productDeleteCommand = null;
-	public Command getProductDeleteCommand() throws LogicException {
-		if(productDeleteCommand == null) {
-			ProductDeleteCommand command = new ProductDeleteCommand();
-			productDeleteCommand = command;
-			command.setProductService(getProductService());
-		}
-		return productDeleteCommand;
+	private Map<String, ActionFactory> actions = new HashMap<>();
+	{
+		ActionFactory mainActionFactory = () -> getMainAction();
+		actions.put("/", mainActionFactory);
+		actions.put("/index", mainActionFactory);
+		actions.put("/login", () -> getLoginAction());
+		actions.put("/logout", () -> getLogoutAction());
+		actions.put("/product/list", () -> getProductListAction());
+		actions.put("/product/edit", () -> getProductEditAction());
+		actions.put("/product/save", () -> getProductSaveAction());
+		actions.put("/product/delete", () -> getProductDeleteAction());
 	}
 
-	private Command productListCommand = null;
-	public Command getProductListCommand() throws LogicException {
-		if(productListCommand == null) {
-			ProductListCommand command = new ProductListCommand();
-			productListCommand = command;
-			command.setProductService(getProductService());
+	public Action getAction(String url) throws LogicException {
+		ActionFactory factory = actions.get(url);
+		if(factory != null) {
+			return factory.getInstance();
 		}
-		return productListCommand;
+		return null;
 	}
 
-	private Command productSaveCommand = null;
-	public Command getProductSaveCommand() throws LogicException {
-		if(productSaveCommand == null) {
-			ProductSaveCommand command = new ProductSaveCommand();
-			productSaveCommand = command;
-			command.setProductService(getProductService());
+	private Action mainAction = null;
+	public Action getMainAction() {
+		if(mainAction == null) {
+			mainAction = new MainAction();
 		}
-		return productSaveCommand;
+		return mainAction;
+	}
+
+	private Action loginAction = null;
+	public Action getLoginAction() throws LogicException {
+		if(loginAction == null) {
+			LoginAction loginActionImpl = new LoginAction();
+			loginAction = loginActionImpl;
+			loginActionImpl.setUserService(getUserService());
+		}
+		return loginAction;
+	}
+
+	private Action logoutAction = null;
+	public Action getLogoutAction() {
+		if(logoutAction == null) {
+			logoutAction = new LogoutAction();
+		}
+		return logoutAction;
+	}
+
+	private Action productListAction = null;
+	public Action getProductListAction() throws LogicException {
+		if(productListAction == null) {
+			ProductListAction productListActionImpl = new ProductListAction();
+			productListAction = productListActionImpl;
+			productListActionImpl.setProductService(getProductService());
+		}
+		return productListAction;
+	}
+
+	private Action productEditAction = null;
+	public Action getProductEditAction() throws LogicException {
+		if(productEditAction == null) {
+			ProductEditAction productEditActionImpl = new ProductEditAction();
+			productEditAction = productEditActionImpl;
+			productEditActionImpl.setProductService(getProductService());
+			productEditActionImpl.setCategoryService(getCategoryService());
+		}
+		return productEditAction;
+	}
+
+	private Action productSaveAction = null;
+	public Action getProductSaveAction() throws LogicException {
+		if(productSaveAction == null) {
+			ProductSaveAction productSaveActionImpl = new ProductSaveAction();
+			productSaveAction = productSaveActionImpl;
+			productSaveActionImpl.setProductService(getProductService());
+		}
+		return productSaveAction;
+	}
+
+	private Action productDeleteAction = null;
+	public Action getProductDeleteAction() throws LogicException {
+		if(productDeleteAction == null) {
+			ProductDeleteAction productDeleteActionImpl = new ProductDeleteAction();
+			productDeleteAction = productDeleteActionImpl;
+			productDeleteActionImpl.setProductService(getProductService());
+		}
+		return productDeleteAction;
 	}
 
 	private CategoryService categoryService = null;
@@ -94,7 +158,6 @@ public class Factory implements AutoCloseable {
 		return productDao;
 	}
 
-
 	private CategoryDao categoryDao = null;
 	public CategoryDao getCategoryDao() throws LogicException {
 		if(categoryDao == null) {
@@ -130,5 +193,9 @@ public class Factory implements AutoCloseable {
 	@Override
 	public void close() {
 		try { connection.close(); } catch(Exception e) {}
+	}
+
+	private static interface ActionFactory {
+		Action getInstance() throws LogicException;
 	}
 }

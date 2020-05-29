@@ -14,73 +14,13 @@
     </session-config>
 
     <servlet>
-      <servlet-name>MainServlet</servlet-name>
-      <servlet-class>org.itstep.web.MainServlet</servlet-class>
+      <servlet-name>DispatcherServlet</servlet-name>
+      <servlet-class>org.itstep.web.DispatcherServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>MainServlet</servlet-name>
-        <url-pattern>/index.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>LoginServlet</servlet-name>
-      <servlet-class>org.itstep.web.LoginServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>LogoutServlet</servlet-name>
-      <servlet-class>org.itstep.web.LogoutServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>ProductListServlet</servlet-name>
-      <servlet-class>org.itstep.web.ProductListServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/product/list.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>ProductEditServlet</servlet-name>
-      <servlet-class>org.itstep.web.ProductEditServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProductEditServlet</servlet-name>
-        <url-pattern>/product/edit.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>ProductSaveServlet</servlet-name>
-      <servlet-class>org.itstep.web.ProductSaveServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProductSaveServlet</servlet-name>
-        <url-pattern>/product/save.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-      <servlet-name>ProductDeleteServlet</servlet-name>
-      <servlet-class>org.itstep.web.ProductDeleteServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProductDeleteServlet</servlet-name>
-        <url-pattern>/product/delete.html</url-pattern>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
 
     <filter>
