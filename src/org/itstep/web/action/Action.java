@@ -17,7 +17,7 @@ public interface Action {
 	public static class Result {
 		private final String url;
 		private final ResultType type;
-		private List<Pair> parameters = new ArrayList<>();
+		private final List<Pair> parameters = new ArrayList<>();
 
 		public Result(String url) {
 			this(url, ResultType.REDIRECT);

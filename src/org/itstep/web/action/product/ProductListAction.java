@@ -13,7 +13,6 @@ public class ProductListAction extends BaseProductAction {
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
 		List<Product> products = getProductService().findAll();
 		req.setAttribute("products", products);
-//		req.getRequestDispatcher("/WEB-INF/jsp/product/list.jsp").forward(req, resp);
 		return null;
 	}
 }
