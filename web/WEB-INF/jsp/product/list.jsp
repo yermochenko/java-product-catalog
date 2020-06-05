@@ -37,4 +37,10 @@
 		<a href="${editUrl}" class="form__button">Добавить</a>
 		<button type="submit" class="form__button_danger">Удалить</button>
 	</form>
+	<c:url var="testJsUrl" value="/script/test.js"/>
+	<c:url var="ajaxUrl" value="/product/list.json"/>
+	<script type="text/javascript">
+		var url = '${ajaxUrl}';
+	</script>
+	<script type="text/javascript" src="${testJsUrl}"></script>
 </u:page>

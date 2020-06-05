@@ -41,6 +41,17 @@
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
 
+    <servlet>
+      <servlet-name>ProductListServlet</servlet-name>
+      <servlet-class>org.itstep.web.ajax.ProductListServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/product/list.json</url-pattern>
+    </servlet-mapping>
+
+
     <listener>
         <listener-class>org.itstep.web.ApplicationInitializer</listener-class>
     </listener>
@@ -49,7 +60,7 @@
         <listener-class>org.itstep.web.AuthorizationLogger</listener-class>
     </listener>
 
-    <error-page>
+    <!--error-page>
         <exception-type>javax.servlet.ServletException</exception-type>
         <location>/WEB-INF/jsp/error.jsp</location>
     </error-page>
@@ -60,7 +71,7 @@
     <error-page>
         <error-code>400</error-code>
         <location>/WEB-INF/jsp/error.jsp</location>
-    </error-page>
+    </error-page-->
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
