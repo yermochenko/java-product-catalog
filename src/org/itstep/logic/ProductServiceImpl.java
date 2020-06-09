@@ -37,6 +37,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<Product> findNamesBySearchString(String search) throws LogicException {
+		try {
+			return productDao.readBySearchString(search);
+		} catch(DaoException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
 	public Product findById(Long id) throws LogicException {
 		try {
 			Product product = productDao.read(id);

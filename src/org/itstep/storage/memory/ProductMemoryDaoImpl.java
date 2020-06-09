@@ -54,4 +54,9 @@ public class ProductMemoryDaoImpl implements ProductDao {
 			}
 		}
 	}
+
+	@Override
+	public List<Product> readBySearchString(String search) throws DaoException {
+		return products;
+	}
 }

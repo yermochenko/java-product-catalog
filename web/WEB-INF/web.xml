@@ -51,6 +51,15 @@
         <url-pattern>/product/list.json</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>ProductNamesSearchServlet</servlet-name>
+      <servlet-class>org.itstep.web.ajax.ProductNamesSearchServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProductNamesSearchServlet</servlet-name>
+        <url-pattern>/product/search.json</url-pattern>
+    </servlet-mapping>
 
     <listener>
         <listener-class>org.itstep.web.ApplicationInitializer</listener-class>
