@@ -58,6 +58,12 @@ html, body {
 	background: #66FF66;
 }
 
+.search-form {
+	position: absolute;
+	padding: 5px;
+	right: 0;
+}
+
 .side {
 	float: left;
 	width: 25%;

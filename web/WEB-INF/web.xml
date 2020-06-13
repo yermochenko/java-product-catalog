@@ -42,16 +42,6 @@
     </filter-mapping>
 
     <servlet>
-      <servlet-name>ProductListServlet</servlet-name>
-      <servlet-class>org.itstep.web.ajax.ProductListServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/product/list.json</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
       <servlet-name>ProductNamesSearchServlet</servlet-name>
       <servlet-class>org.itstep.web.ajax.ProductNamesSearchServlet</servlet-class>
     </servlet>

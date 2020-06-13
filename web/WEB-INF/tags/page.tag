@@ -15,10 +15,20 @@
 		<c:if test="${not empty css}">
 			<link rel="stylesheet" href="${css}" type="text/css">
 		</c:if>
+		<c:url var="searchJsonUrl" value="/product/search.json"/>
+		<script type="text/javascript">
+			var searchUrl = '${searchJsonUrl}';
+		</script>
+		<c:url var="searchJsUrl" value="/script/dynamic-search.js"/>
+		<script type="text/javascript" src="${searchJsUrl}"></script>
 	</head>
 	<body>
 		<div class="wrapper">
 			<div class="header">
+				<form class="search-form" action="#">
+					<input id="search-text" type="text" name="search">
+					<button type="submit">Найти</button>
+				</form>
 				<c:if test="${not empty sessionUser}">
 					<ul class="main-menu">
 						<!-- TODO: add main menu -->
