@@ -26,7 +26,8 @@
 		<div class="wrapper">
 			<div class="header">
 				<form class="search-form" action="#">
-					<input id="search-text" type="text" name="search">
+					<input id="search-text" type="text" name="search" list="search-text-datalist" autocomplete="off">
+					<datalist id="search-text-datalist"></datalist>
 					<button type="submit">Найти</button>
 				</form>
 				<c:if test="${not empty sessionUser}">
