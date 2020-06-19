@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<u:page title="Вход в систему">
+<u:page title="Вход в систему" simple="true">
 	<c:if test="${not empty param.message}">
 		<div class="message">${param.message}</div>
 	</c:if>

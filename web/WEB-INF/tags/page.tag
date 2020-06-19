@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ attribute name="title" required="false" rtexprvalue="true" type="java.lang.String" %>
 <%@ attribute name="css" required="false" rtexprvalue="true" type="java.lang.String" %>
+<%@ attribute name="simple" required="false" rtexprvalue="true" type="java.lang.Boolean" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -25,11 +26,13 @@
 	<body>
 		<div class="wrapper">
 			<div class="header">
-				<form class="search-form" action="#">
-					<input id="search-text" type="text" name="search" list="search-text-datalist" autocomplete="off">
-					<datalist id="search-text-datalist"></datalist>
-					<button type="submit">Найти</button>
-				</form>
+				<c:if test="${empty simple or not simple}">
+					<form class="search-form" action="#">
+						<input id="search-text" type="text" name="search" list="search-text-datalist" autocomplete="off">
+						<datalist id="search-text-datalist"></datalist>
+						<button type="submit">Найти</button>
+					</form>
+				</c:if>
 				<c:if test="${not empty sessionUser}">
 					<ul class="main-menu">
 						<!-- TODO: add main menu -->
