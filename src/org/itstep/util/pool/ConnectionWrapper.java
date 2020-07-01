@@ -1,4 +1,4 @@
-package org.itstep.util;
+package org.itstep.util.pool;
 
 import java.sql.Array;
 import java.sql.Blob;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-public class ConnectionWrapper implements Connection {
+public class ConnectionWrapper implements Connection, Comparable<ConnectionWrapper> {
 	private Connection connection;
 
 	public ConnectionWrapper(Connection connection) {
@@ -73,7 +73,6 @@ public class ConnectionWrapper implements Connection {
 
 	public void close() throws SQLException {
 		ConnectionPool.getInstance().freeConnection(this);
-		connection = null;
 	}
 
 	public boolean isClosed() throws SQLException {
@@ -275,5 +274,10 @@ public class ConnectionWrapper implements Connection {
 
 	public void setShardingKey(ShardingKey shardingKey) throws SQLException {
 		connection.setShardingKey(shardingKey);
+	}
+
+	@Override
+	public int compareTo(ConnectionWrapper connectionWrapper) {
+		return Integer.compare(connection.hashCode(), connectionWrapper.getConnection().hashCode());
 	}
 }

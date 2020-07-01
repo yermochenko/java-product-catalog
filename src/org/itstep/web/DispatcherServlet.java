@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.itstep.Factory;
 import org.itstep.logic.LogicException;
+import org.itstep.util.ioc.Factory;
 import org.itstep.web.action.Action;
 import org.itstep.web.action.Action.Result;
 import org.itstep.web.action.Action.ResultType;

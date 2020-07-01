@@ -1,4 +1,4 @@
-package org.itstep.util;
+package org.itstep.util.pool;
 
 public class ConnectionPoolException extends Exception {
 	public ConnectionPoolException() {}

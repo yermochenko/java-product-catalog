@@ -1,8 +1,6 @@
-package org.itstep;
+package org.itstep.util.ioc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +17,8 @@ import org.itstep.storage.UserDao;
 import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.storage.postgres.UserDbDaoImpl;
+import org.itstep.util.pool.ConnectionPool;
+import org.itstep.util.pool.ConnectionPoolException;
 import org.itstep.web.action.Action;
 import org.itstep.web.action.LoginAction;
 import org.itstep.web.action.LogoutAction;
@@ -182,8 +182,8 @@ public class Factory implements AutoCloseable {
 	public Connection getConnection() throws LogicException {
 		if(connection == null) {
 			try {
-				connection = DriverManager.getConnection("jdbc:postgresql://localhost/store_db", "root", "root");
-			} catch(SQLException e) {
+				connection = ConnectionPool.getInstance().getConnection();
+			} catch(ConnectionPoolException e) {
 				throw new LogicException(e);
 			}
 		}

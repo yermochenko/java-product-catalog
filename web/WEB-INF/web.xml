@@ -13,6 +13,35 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
+    <context-param>
+        <param-name>jdbc-driver</param-name>
+        <param-value>org.postgresql.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jdbc-url</param-name>
+        <param-value>jdbc:postgresql://localhost/store_db</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jdbc-user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>jdbc-password</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connection-pool-min-size</param-name>
+        <param-value>5</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connection-pool-max-size</param-name>
+        <param-value>20</param-value>
+    </context-param>
+    <context-param>
+        <param-name>connection-pool-validation-timeout</param-name>
+        <param-value>1000</param-value>
+    </context-param>
+
     <servlet>
       <servlet-name>DispatcherServlet</servlet-name>
       <servlet-class>org.itstep.web.DispatcherServlet</servlet-class>
@@ -59,7 +88,7 @@
         <listener-class>org.itstep.web.AuthorizationLogger</listener-class>
     </listener>
 
-    <!--error-page>
+    <error-page>
         <exception-type>javax.servlet.ServletException</exception-type>
         <location>/WEB-INF/jsp/error.jsp</location>
     </error-page>
@@ -70,7 +99,7 @@
     <error-page>
         <error-code>400</error-code>
         <location>/WEB-INF/jsp/error.jsp</location>
-    </error-page-->
+    </error-page>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

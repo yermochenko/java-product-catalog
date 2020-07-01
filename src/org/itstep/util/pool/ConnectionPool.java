@@ -1,4 +1,4 @@
-package org.itstep.util;
+package org.itstep.util.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.itstep.Factory;
 import org.itstep.domain.Product;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
+import org.itstep.util.ioc.Factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
