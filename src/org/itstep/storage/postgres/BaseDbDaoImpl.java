@@ -24,8 +24,8 @@ abstract public class BaseDbDaoImpl<T extends Entity> implements Dao<T> {
 
 	@Override
 	public final Long create(T entity) throws DaoException {
-		Long id = createRaw(entity);
 		cache.clear();
+		Long id = createRaw(entity);
 		return id;
 	}
 
@@ -41,19 +41,19 @@ abstract public class BaseDbDaoImpl<T extends Entity> implements Dao<T> {
 
 	@Override
 	public final void update(T entity) throws DaoException {
-		updateRaw(entity);
 		cache.clear();
+		updateRaw(entity);
 	}
 
 	@Override
 	public final void delete(Long id) throws DaoException {
+		cache.clear();
 		String sql = String.format("DELETE FROM \"%s\" WHERE \"id\" = ?", getTableName());
 		PreparedStatement s = null;
 		try {
 			s = getConnection().prepareStatement(sql);
 			s.setLong(1, id);
 			s.executeUpdate();
-			cache.clear();
 		} catch(SQLException e) {
 			throw new DaoException(e);
 		} finally {

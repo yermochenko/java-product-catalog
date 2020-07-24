@@ -1,5 +1,6 @@
 package org.itstep.util.ioc;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.itstep.logic.UserServiceImpl;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.ProductDao;
 import org.itstep.storage.UserDao;
+import org.itstep.storage.postgres.BaseDbDaoImpl;
 import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.storage.postgres.UserDbDaoImpl;
@@ -29,6 +31,44 @@ import org.itstep.web.action.product.ProductListAction;
 import org.itstep.web.action.product.ProductSaveAction;
 
 public class Factory implements AutoCloseable {
+	private static Map<Class<?>, Class<?>> iocContainer = new HashMap<>();
+	static {
+		iocContainer.put(UserDao.class, UserDbDaoImpl.class);
+	}
+
+	private Map<Class<?>, Object> cache = new HashMap<>();
+
+	private static Map<Class<?>, DependencyInjector> injectors = new HashMap<>();
+	static {
+		DependencyInjector daoDI = (obj, factory) -> {
+			BaseDbDaoImpl<?> userDbDaoImpl = (BaseDbDaoImpl<?>)obj;
+			userDbDaoImpl.setConnection(factory.getConnection());
+		};
+		injectors.put(UserDbDaoImpl.class, daoDI);
+		injectors.put(CategoryDbDaoImpl.class, daoDI);
+		injectors.put(ProductDbDaoImpl.class, daoDI);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T get(Class<T> i) throws LogicException {
+		Object o = cache.get(i);
+		if(o == null) {
+			Class<?> c = iocContainer.get(i);
+			if(c != null) {
+				try {
+					o = c.getConstructor().newInstance();
+					cache.put(i, o);
+					injectors.get(c).inject(o, this);
+				} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					throw new ImplementationInstantiationIocContainerException(e);
+				}
+			} else {
+				throw new InterfaceImplementationNotFoundIocContainerException();
+			}
+		}
+		return (T)o;
+	}
+
 	private Map<String, ActionFactory> actions = new HashMap<>();
 	{
 		ActionFactory mainActionFactory = () -> getMainAction();
@@ -197,5 +237,9 @@ public class Factory implements AutoCloseable {
 
 	private static interface ActionFactory {
 		Action getInstance() throws LogicException;
+	}
+
+	private static interface DependencyInjector {
+		void inject(Object obj, Factory factory) throws LogicException;
 	}
 }
