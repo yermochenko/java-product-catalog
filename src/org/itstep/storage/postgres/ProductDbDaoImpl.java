@@ -12,9 +12,9 @@ import org.itstep.domain.Product;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.ProductDao;
 
-public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
+public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductDao {
 	@Override
-	public Long create(Product product) throws DaoException {
+	protected Long createRaw(Product product) throws DaoException {
 		String sql = "INSERT INTO \"product\"(\"category_id\", \"name\", \"price\", \"amount\", \"date\") VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement s = null;
 		ResultSet r = null;
@@ -38,7 +38,7 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public Product read(Long id) throws DaoException {
+	protected Product readRaw(Long id) throws DaoException {
 		String sql = "SELECT \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		ResultSet r = null;
@@ -67,7 +67,7 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public void update(Product product) throws DaoException {
+	protected void updateRaw(Product product) throws DaoException {
 		String sql = "UPDATE \"product\" SET \"category_id\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
@@ -78,21 +78,6 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
 			s.setInt(4, product.getAmount());
 			s.setDate(5, new java.sql.Date(product.getDate().getTime()));
 			s.setLong(6, product.getId());
-			s.executeUpdate();
-		} catch(SQLException e) {
-			throw new DaoException(e);
-		} finally {
-			try { s.close(); } catch(Exception e) {}
-		}
-	}
-
-	@Override
-	public void delete(Long id) throws DaoException {
-		String sql = "DELETE FROM \"product\" WHERE \"id\" = ?";
-		PreparedStatement s = null;
-		try {
-			s = getConnection().prepareStatement(sql);
-			s.setLong(1, id);
 			s.executeUpdate();
 		} catch(SQLException e) {
 			throw new DaoException(e);
@@ -157,5 +142,10 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
 			try { r.close(); } catch(Exception e) {}
 			try { s.close(); } catch(Exception e) {}
 		}
+	}
+
+	@Override
+	protected String getTableName() {
+		return "product";
 	}
 }

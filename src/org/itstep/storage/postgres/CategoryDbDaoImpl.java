@@ -5,19 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.itstep.domain.Category;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.DaoException;
 
-public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
-	private Map<Long, Category> cache = new HashMap<>();
-
+public class CategoryDbDaoImpl extends BaseDbDaoImpl<Category> implements CategoryDao {
 	@Override
-	public Long create(Category category) throws DaoException {
+	protected Long createRaw(Category category) throws DaoException {
 		String sql = "INSERT INTO \"category\"(\"name\") VALUES (?)";
 		PreparedStatement s = null;
 		ResultSet r = null;
@@ -27,7 +23,6 @@ public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
 			s.executeUpdate();
 			r = s.getGeneratedKeys(); // ПОЛУЧАЕМ сгенерированные ключи (не работает без Statement.RETURN_GENERATED_KEYS)
 			r.next();
-			cache.clear();
 			return r.getLong(1);
 		} catch(SQLException e) {
 			throw new DaoException(e);
@@ -38,34 +33,31 @@ public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public Category read(Long id) throws DaoException {
+	protected Category readRaw(Long id) throws DaoException {
 		String sql = "SELECT \"name\" FROM \"category\" WHERE \"id\" = ?";
-		Category category = cache.get(id);
-		if(category == null) {
-			PreparedStatement s = null;
-			ResultSet r = null;
-			try {
-				s = getConnection().prepareStatement(sql);
-				s.setLong(1, id);
-				r = s.executeQuery();
-				if(r.next()) {
-					category = new Category();
-					category.setId(id);
-					category.setName(r.getString("name"));
-					cache.put(id, category);
-				}
-			} catch(SQLException e) {
-				throw new DaoException(e);
-			} finally {
-				try { r.close(); } catch(Exception e) {}
-				try { s.close(); } catch(Exception e) {}
+		PreparedStatement s = null;
+		ResultSet r = null;
+		try {
+			s = getConnection().prepareStatement(sql);
+			s.setLong(1, id);
+			r = s.executeQuery();
+			Category category = null;
+			if(r.next()) {
+				category = new Category();
+				category.setId(id);
+				category.setName(r.getString("name"));
 			}
+			return category;
+		} catch(SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			try { r.close(); } catch(Exception e) {}
+			try { s.close(); } catch(Exception e) {}
 		}
-		return category;
 	}
 
 	@Override
-	public void update(Category category) throws DaoException {
+	protected void updateRaw(Category category) throws DaoException {
 		String sql = "UPDATE \"category\" SET \"name\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
@@ -73,23 +65,6 @@ public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
 			s.setString(1, category.getName());
 			s.setLong(2, category.getId());
 			s.executeUpdate();
-			cache.clear();
-		} catch(SQLException e) {
-			throw new DaoException(e);
-		} finally {
-			try { s.close(); } catch(Exception e) {}
-		}
-	}
-
-	@Override
-	public void delete(Long id) throws DaoException {
-		String sql = "DELETE FROM \"category\" WHERE \"id\" = ?";
-		PreparedStatement s = null;
-		try {
-			s = getConnection().prepareStatement(sql);
-			s.setLong(1, id);
-			s.executeUpdate();
-			cache.clear();
 		} catch(SQLException e) {
 			throw new DaoException(e);
 		} finally {
@@ -119,5 +94,10 @@ public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
 			try { r.close(); } catch(Exception e) {}
 			try { s.close(); } catch(Exception e) {}
 		}
+	}
+
+	@Override
+	protected String getTableName() {
+		return "category";
 	}
 }

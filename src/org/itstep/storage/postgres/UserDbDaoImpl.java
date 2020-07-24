@@ -4,19 +4,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.itstep.domain.Role;
 import org.itstep.domain.User;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.UserDao;
 
-public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
-	private Map<Long, User> cache = new HashMap<>();
-
+public class UserDbDaoImpl extends BaseDbDaoImpl<User> implements UserDao {
 	@Override
-	public Long create(User user) throws DaoException {
+	protected Long createRaw(User user) throws DaoException {
 		String sql = "INSERT INTO \"user\"(\"login\", \"password\", \"role\") VALUES (?, ?, ?)";
 		PreparedStatement s = null;
 		ResultSet r = null;
@@ -28,7 +24,6 @@ public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
 			s.executeUpdate();
 			r = s.getGeneratedKeys();
 			r.next();
-			cache.clear();
 			return r.getLong(1);
 		} catch(SQLException e) {
 			throw new DaoException(e);
@@ -39,36 +34,33 @@ public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User read(Long id) throws DaoException {
+	protected User readRaw(Long id) throws DaoException {
 		String sql = "SELECT \"login\", \"password\", \"role\" FROM \"user\" WHERE \"id\" = ?";
-		User user = cache.get(id);
-		if(user == null) {
-			PreparedStatement s = null;
-			ResultSet r = null;
-			try {
-				s = getConnection().prepareStatement(sql);
-				s.setLong(1, id);
-				r = s.executeQuery();
-				if(r.next()) {
-					user = new User();
-					user.setId(id);
-					user.setLogin(r.getString("login"));
-					user.setPassword(r.getString("password"));
-					user.setRole(Role.values()[r.getInt("role")]);
-					cache.put(id, user);
-				}
-			} catch(SQLException e) {
-				throw new DaoException(e);
-			} finally {
-				try { r.close(); } catch(Exception e) {}
-				try { s.close(); } catch(Exception e) {}
+		PreparedStatement s = null;
+		ResultSet r = null;
+		try {
+			s = getConnection().prepareStatement(sql);
+			s.setLong(1, id);
+			r = s.executeQuery();
+			User user = null;
+			if(r.next()) {
+				user = new User();
+				user.setId(id);
+				user.setLogin(r.getString("login"));
+				user.setPassword(r.getString("password"));
+				user.setRole(Role.values()[r.getInt("role")]);
 			}
+			return user;
+		} catch(SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			try { r.close(); } catch(Exception e) {}
+			try { s.close(); } catch(Exception e) {}
 		}
-		return user;
 	}
 
 	@Override
-	public void update(User user) throws DaoException {
+	protected void updateRaw(User user) throws DaoException {
 		String sql = "UPDATE \"user\" SET \"login\" = ?, \"password\" = ?, \"role\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
@@ -78,23 +70,6 @@ public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
 			s.setInt(3, user.getRole().ordinal());
 			s.setLong(4, user.getId());
 			s.executeUpdate();
-			cache.clear();
-		} catch(SQLException e) {
-			throw new DaoException(e);
-		} finally {
-			try { s.close(); } catch(Exception e) {}
-		}
-	}
-
-	@Override
-	public void delete(Long id) throws DaoException {
-		String sql = "DELETE FROM \"user\" WHERE \"id\" = ?";
-		PreparedStatement s = null;
-		try {
-			s = getConnection().prepareStatement(sql);
-			s.setLong(1, id);
-			s.executeUpdate();
-			cache.clear();
 		} catch(SQLException e) {
 			throw new DaoException(e);
 		} finally {
@@ -127,5 +102,10 @@ public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
 			try { r.close(); } catch(Exception e) {}
 			try { s.close(); } catch(Exception e) {}
 		}
+	}
+
+	@Override
+	protected String getTableName() {
+		return "user";
 	}
 }
