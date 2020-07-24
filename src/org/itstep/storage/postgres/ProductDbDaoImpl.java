@@ -1,6 +1,5 @@
 package org.itstep.storage.postgres;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,20 +12,14 @@ import org.itstep.domain.Product;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.ProductDao;
 
-public class ProductDbDaoImpl implements ProductDao {
-	private Connection c;
-
-	public void setConnection(Connection c) {
-		this.c = c;
-	}
-
+public class ProductDbDaoImpl extends BaseDbDaoImpl implements ProductDao {
 	@Override
 	public Long create(Product product) throws DaoException {
 		String sql = "INSERT INTO \"product\"(\"category_id\", \"name\", \"price\", \"amount\", \"date\") VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
+			s = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
 			s.setLong(1, product.getCategory().getId());
 			s.setString(2, product.getName());
 			s.setLong(3, product.getPrice());
@@ -50,7 +43,7 @@ public class ProductDbDaoImpl implements ProductDao {
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setLong(1, id);
 			r = s.executeQuery();
 			Product product = null;
@@ -78,7 +71,7 @@ public class ProductDbDaoImpl implements ProductDao {
 		String sql = "UPDATE \"product\" SET \"category_id\" = ?, \"name\" = ?, \"price\" = ?, \"amount\" = ?, \"date\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setLong(1, product.getCategory().getId());
 			s.setString(2, product.getName());
 			s.setLong(3, product.getPrice());
@@ -98,7 +91,7 @@ public class ProductDbDaoImpl implements ProductDao {
 		String sql = "DELETE FROM \"product\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setLong(1, id);
 			s.executeUpdate();
 		} catch(SQLException e) {
@@ -114,7 +107,7 @@ public class ProductDbDaoImpl implements ProductDao {
 		Statement s = null;
 		ResultSet r = null;
 		try {
-			s = c.createStatement();
+			s = getConnection().createStatement();
 			r = s.executeQuery(sql);
 			List<Product> products = new ArrayList<>();
 			while(r.next()) {
@@ -143,7 +136,7 @@ public class ProductDbDaoImpl implements ProductDao {
 		Statement s = null;
 		ResultSet r = null;
 		try {
-			s = c.createStatement();
+			s = getConnection().createStatement();
 			r = s.executeQuery(sql);
 			List<Product> products = new ArrayList<>();
 			while(r.next()) {

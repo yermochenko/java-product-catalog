@@ -1,6 +1,5 @@
 package org.itstep.storage.postgres;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +13,7 @@ import org.itstep.domain.Category;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.DaoException;
 
-public class CategoryDbDaoImpl implements CategoryDao {
-	private Connection c;
-
-	public void setConnection(Connection c) {
-		this.c = c;
-	}
-
+public class CategoryDbDaoImpl extends BaseDbDaoImpl implements CategoryDao {
 	private Map<Long, Category> cache = new HashMap<>();
 
 	@Override
@@ -29,7 +22,7 @@ public class CategoryDbDaoImpl implements CategoryDao {
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
+			s = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // просим, чтобы statement МОГ получить ключи
 			s.setString(1, category.getName());
 			s.executeUpdate();
 			r = s.getGeneratedKeys(); // ПОЛУЧАЕМ сгенерированные ключи (не работает без Statement.RETURN_GENERATED_KEYS)
@@ -52,7 +45,7 @@ public class CategoryDbDaoImpl implements CategoryDao {
 			PreparedStatement s = null;
 			ResultSet r = null;
 			try {
-				s = c.prepareStatement(sql);
+				s = getConnection().prepareStatement(sql);
 				s.setLong(1, id);
 				r = s.executeQuery();
 				if(r.next()) {
@@ -76,7 +69,7 @@ public class CategoryDbDaoImpl implements CategoryDao {
 		String sql = "UPDATE \"category\" SET \"name\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setString(1, category.getName());
 			s.setLong(2, category.getId());
 			s.executeUpdate();
@@ -93,7 +86,7 @@ public class CategoryDbDaoImpl implements CategoryDao {
 		String sql = "DELETE FROM \"category\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setLong(1, id);
 			s.executeUpdate();
 			cache.clear();
@@ -110,7 +103,7 @@ public class CategoryDbDaoImpl implements CategoryDao {
 		Statement s = null;
 		ResultSet r = null;
 		try {
-			s = c.createStatement();
+			s = getConnection().createStatement();
 			r = s.executeQuery(sql);
 			List<Category> categories = new ArrayList<>();
 			while(r.next()) {

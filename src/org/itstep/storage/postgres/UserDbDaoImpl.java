@@ -1,6 +1,5 @@
 package org.itstep.storage.postgres;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,13 +12,7 @@ import org.itstep.domain.User;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.UserDao;
 
-public class UserDbDaoImpl implements UserDao {
-	private Connection c;
-
-	public void setConnection(Connection c) {
-		this.c = c;
-	}
-
+public class UserDbDaoImpl extends BaseDbDaoImpl implements UserDao {
 	private Map<Long, User> cache = new HashMap<>();
 
 	@Override
@@ -28,7 +21,7 @@ public class UserDbDaoImpl implements UserDao {
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			s = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			s.setString(1, user.getLogin());
 			s.setString(2, user.getPassword());
 			s.setInt(3, user.getRole().ordinal());
@@ -53,7 +46,7 @@ public class UserDbDaoImpl implements UserDao {
 			PreparedStatement s = null;
 			ResultSet r = null;
 			try {
-				s = c.prepareStatement(sql);
+				s = getConnection().prepareStatement(sql);
 				s.setLong(1, id);
 				r = s.executeQuery();
 				if(r.next()) {
@@ -79,7 +72,7 @@ public class UserDbDaoImpl implements UserDao {
 		String sql = "UPDATE \"user\" SET \"login\" = ?, \"password\" = ?, \"role\" = ? WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setString(1, user.getLogin());
 			s.setString(2, user.getPassword());
 			s.setInt(3, user.getRole().ordinal());
@@ -98,7 +91,7 @@ public class UserDbDaoImpl implements UserDao {
 		String sql = "DELETE FROM \"user\" WHERE \"id\" = ?";
 		PreparedStatement s = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setLong(1, id);
 			s.executeUpdate();
 			cache.clear();
@@ -115,7 +108,7 @@ public class UserDbDaoImpl implements UserDao {
 		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = c.prepareStatement(sql);
+			s = getConnection().prepareStatement(sql);
 			s.setString(1, login);
 			s.setString(2, password);
 			r = s.executeQuery();
