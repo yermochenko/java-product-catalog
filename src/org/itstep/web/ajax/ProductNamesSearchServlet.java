@@ -23,7 +23,7 @@ public class ProductNamesSearchServlet extends HttpServlet {
 		if(search != null) {
 			search = URLDecoder.decode(search, "UTF-8");
 			try(Factory factory = new Factory()) {
-				ProductService service = factory.getProductService();
+				ProductService service = factory.get(ProductService.class);
 				List<Product> products = service.findNamesBySearchString(search);
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");

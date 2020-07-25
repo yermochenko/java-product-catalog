@@ -33,13 +33,21 @@ import org.itstep.web.action.product.ProductSaveAction;
 public class Factory implements AutoCloseable {
 	private static Map<Class<?>, Class<?>> iocContainer = new HashMap<>();
 	static {
+		// DAO
 		iocContainer.put(UserDao.class, UserDbDaoImpl.class);
+		iocContainer.put(CategoryDao.class, CategoryDbDaoImpl.class);
+		iocContainer.put(ProductDao.class, ProductDbDaoImpl.class);
+		// Services
+		iocContainer.put(UserService.class, UserServiceImpl.class);
+		iocContainer.put(CategoryService.class, CategoryServiceImpl.class);
+		iocContainer.put(ProductService.class, ProductServiceImpl.class);
 	}
 
 	private Map<Class<?>, Object> cache = new HashMap<>();
 
 	private static Map<Class<?>, DependencyInjector> injectors = new HashMap<>();
 	static {
+		// DAO
 		DependencyInjector daoDI = (obj, factory) -> {
 			BaseDbDaoImpl<?> userDbDaoImpl = (BaseDbDaoImpl<?>)obj;
 			userDbDaoImpl.setConnection(factory.getConnection());
@@ -47,6 +55,20 @@ public class Factory implements AutoCloseable {
 		injectors.put(UserDbDaoImpl.class, daoDI);
 		injectors.put(CategoryDbDaoImpl.class, daoDI);
 		injectors.put(ProductDbDaoImpl.class, daoDI);
+		// Services
+		injectors.put(UserServiceImpl.class, (obj, factory) -> {
+			UserServiceImpl service = (UserServiceImpl)obj;
+			service.setUserDao(factory.get(UserDao.class));
+		});
+		injectors.put(CategoryServiceImpl.class, (obj, factory) -> {
+			CategoryServiceImpl service = (CategoryServiceImpl)obj;
+			service.setCategoryDao(factory.get(CategoryDao.class));
+		});
+		injectors.put(ProductServiceImpl.class, (obj, factory) -> {
+			ProductServiceImpl service = (ProductServiceImpl)obj;
+			service.setProductDao(factory.get(ProductDao.class));
+			service.setCategoryDao(factory.get(CategoryDao.class));
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -103,7 +125,7 @@ public class Factory implements AutoCloseable {
 		if(loginAction == null) {
 			LoginAction loginActionImpl = new LoginAction();
 			loginAction = loginActionImpl;
-			loginActionImpl.setUserService(getUserService());
+			loginActionImpl.setUserService(get(UserService.class));
 		}
 		return loginAction;
 	}
@@ -121,7 +143,7 @@ public class Factory implements AutoCloseable {
 		if(productListAction == null) {
 			ProductListAction productListActionImpl = new ProductListAction();
 			productListAction = productListActionImpl;
-			productListActionImpl.setProductService(getProductService());
+			productListActionImpl.setProductService(get(ProductService.class));
 		}
 		return productListAction;
 	}
@@ -131,8 +153,8 @@ public class Factory implements AutoCloseable {
 		if(productEditAction == null) {
 			ProductEditAction productEditActionImpl = new ProductEditAction();
 			productEditAction = productEditActionImpl;
-			productEditActionImpl.setProductService(getProductService());
-			productEditActionImpl.setCategoryService(getCategoryService());
+			productEditActionImpl.setCategoryService(get(CategoryService.class));
+			productEditActionImpl.setProductService(get(ProductService.class));
 		}
 		return productEditAction;
 	}
@@ -142,7 +164,7 @@ public class Factory implements AutoCloseable {
 		if(productSaveAction == null) {
 			ProductSaveAction productSaveActionImpl = new ProductSaveAction();
 			productSaveAction = productSaveActionImpl;
-			productSaveActionImpl.setProductService(getProductService());
+			productSaveActionImpl.setProductService(get(ProductService.class));
 		}
 		return productSaveAction;
 	}
@@ -152,70 +174,9 @@ public class Factory implements AutoCloseable {
 		if(productDeleteAction == null) {
 			ProductDeleteAction productDeleteActionImpl = new ProductDeleteAction();
 			productDeleteAction = productDeleteActionImpl;
-			productDeleteActionImpl.setProductService(getProductService());
+			productDeleteActionImpl.setProductService(get(ProductService.class));
 		}
 		return productDeleteAction;
-	}
-
-	private CategoryService categoryService = null;
-	public CategoryService getCategoryService() throws LogicException {
-		if(categoryService == null) {
-			CategoryServiceImpl service = new CategoryServiceImpl();
-			categoryService = service;
-			service.setCategoryDao(getCategoryDao());
-		}
-		return categoryService;
-	}
-
-	private ProductService productService = null;
-	public ProductService getProductService() throws LogicException {
-		if(productService == null) {
-			ProductServiceImpl service = new ProductServiceImpl();
-			productService = service;
-			service.setProductDao(getProductDao());
-			service.setCategoryDao(getCategoryDao());
-		}
-		return productService;
-	}
-
-	private UserService userService = null;
-	public UserService getUserService() throws LogicException {
-		if(userService == null) {
-			UserServiceImpl service = new UserServiceImpl();
-			userService = service;
-			service.setUserDao(getUserDao());
-		}
-		return userService;
-	}
-
-	private ProductDao productDao = null;
-	public ProductDao getProductDao() throws LogicException {
-		if(productDao == null) {
-			ProductDbDaoImpl productDaoImpl = new ProductDbDaoImpl();
-			productDao = productDaoImpl;
-			productDaoImpl.setConnection(getConnection());
-		}
-		return productDao;
-	}
-
-	private CategoryDao categoryDao = null;
-	public CategoryDao getCategoryDao() throws LogicException {
-		if(categoryDao == null) {
-			CategoryDbDaoImpl categoryDaoImpl = new CategoryDbDaoImpl();
-			categoryDao = categoryDaoImpl;
-			categoryDaoImpl.setConnection(getConnection());
-		}
-		return categoryDao;
-	}
-
-	private UserDao userDao = null;
-	public UserDao getUserDao() throws LogicException {
-		if(userDao == null) {
-			UserDbDaoImpl userDaoImpl = new UserDbDaoImpl();
-			userDao = userDaoImpl;
-			userDaoImpl.setConnection(getConnection());
-		}
-		return userDao;
 	}
 
 	private Connection connection = null;
