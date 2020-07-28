@@ -6,33 +6,27 @@
 
 <u:page title="Список товаров" categories="${categories}">
 	<c:url var="deleteUrl" value="/product/delete.html"/>
+	<c:url var="noImageUrl" value="/image/no-image.jpg"/>
 	<form action="${deleteUrl}" method="post">
-		<table class="table">
-			<tr>
-				<th class="table__header"></th>
-				<th class="table__header">Категория</th>
-				<th class="table__header">Название</th>
-				<th class="table__header">Цена</th>
-				<th class="table__header">Количество</th>
-				<th class="table__header">Дата добавления</th>
-				<th class="table__header"></th>
-			</tr>
-			<c:forEach var="product" items="${products}">
-			<tr>
-				<td class="table__cell"><input type="checkbox" name="id" value="${product.id}"></td>
-				<td class="table__cell">${product.category.name}</td>
-				<td class="table__cell">${product.name}</td>
-				<td class="table__cell_numeric">${product.price} коп.</td>
-				<td class="table__cell_numeric">${product.amount} шт.</td>
-				<td class="table__cell"><fmt:formatDate value="${product.date}" pattern="dd.MM.yyyy"/></td>
-				<c:url var="editUrl" value="/product/edit.html">
-					<c:param name="id" value="${product.id}"/>
-				</c:url>
-				<td class="table__cell"><a href="${editUrl}" class="form__button">Редактировать</a></td>
-			</tr>
+		<c:forEach var="item" items="${products}">
+			<h3 class="end">Товары категории &laquo;${item.key.name}&raquo;</h3>
+			<c:forEach var="product" items="${item.value}">
+				<div class="product">
+					<h3 class="product__title"><input type="checkbox" name="id" value="${product.id}"> ${product.name}</h3>
+					<img class="product__photo" src="${noImageUrl}">
+					<div class="product__price">$<fmt:formatNumber value="${product.price / 100.0}" minFractionDigits="2" maxFractionDigits="2"/></div>
+					<div class="product__amount">${product.amount}&nbsp;шт.</div>
+					<div class="product__date"><fmt:formatDate value="${product.date}" pattern="dd.MM.yyyy"/></div>
+					<div>
+						<c:url var="editUrl" value="/product/edit.html">
+							<c:param name="id" value="${product.id}"/>
+						</c:url>
+						<a href="${editUrl}" class="product__button">Редактировать</a>
+					</div>
+				</div>
 			</c:forEach>
-		</table>
-		<p>Итого ${fn:length(products)} товаров</p>
+		</c:forEach>
+		<p class="end">Итого ${fn:length(products)} товаров</p>
 		<c:url var="editUrl" value="/product/edit.html"/>
 		<a href="${editUrl}" class="form__button">Добавить</a>
 		<button type="submit" class="form__button_danger">Удалить</button>

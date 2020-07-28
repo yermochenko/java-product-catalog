@@ -1,6 +1,7 @@
 package org.itstep.web.action.product;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public class ProductListAction extends BaseProductAction {
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
 		List<Category> categories = getCategoryService().findAll();
 		req.setAttribute("categories", categories);
-		List<Product> products = getProductService().findAll();
+		Map<Category, List<Product>> products = getProductService().findLatest();
 		req.setAttribute("products", products);
 		return null;
 	}

@@ -149,12 +149,20 @@ html, body {
 	color: red;
 }
 
-.product__description {
-	height: 160px;
-	overflow: hidden;
+.product__amount {
+	margin: 5px 0;
+	height: 20px;
+	line-height: 20px;
+	font-weight: bold;
 }
 
-.product__button-add {
+.product__date {
+	margin: 5px 0 120px 0;
+	height: 20px;
+	line-height: 20px;
+}
+
+.product__button {
 	display: block;
 	float: right;
 	margin: 0;
@@ -168,7 +176,7 @@ html, body {
 	text-decoration: none;
 }
 
-.product__button-add:hover {
+.product__button:hover {
 	background: #66FF66;
 }
 

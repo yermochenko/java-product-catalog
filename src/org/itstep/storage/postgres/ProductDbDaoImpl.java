@@ -145,6 +145,35 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductD
 	}
 
 	@Override
+	public List<Product> readLatest() throws DaoException {
+		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" ORDER BY \"date\" LIMIT 10";
+		Statement s = null;
+		ResultSet r = null;
+		try {
+			s = getConnection().createStatement();
+			r = s.executeQuery(sql);
+			List<Product> products = new ArrayList<>();
+			while(r.next()) {
+				Product product = new Product();
+				product.setId(r.getLong("id"));
+				product.setCategory(new Category());
+				product.getCategory().setId(r.getLong("category_id"));
+				product.setName(r.getString("name"));
+				product.setPrice(r.getLong("price"));
+				product.setAmount(r.getInt("amount"));
+				product.setDate(new java.util.Date(r.getDate("date").getTime()));
+				products.add(product);
+			}
+			return products;
+		} catch(SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			try { r.close(); } catch(Exception e) {}
+			try { s.close(); } catch(Exception e) {}
+		}
+	}
+
+	@Override
 	protected String getTableName() {
 		return "product";
 	}

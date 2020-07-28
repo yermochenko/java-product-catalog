@@ -1,7 +1,10 @@
 package org.itstep.logic;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.itstep.domain.Category;
 import org.itstep.domain.Product;
@@ -40,6 +43,28 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> findNamesBySearchString(String search) throws LogicException {
 		try {
 			return productDao.readBySearchString(search);
+		} catch(DaoException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
+	public Map<Category, List<Product>> findLatest() throws LogicException {
+		try {
+			Map<Category, List<Product>> result = new HashMap<>();
+			List<Product> products = productDao.readLatest();
+			for(Product product : products) {
+				Category category = product.getCategory();
+				category = categoryDao.read(category.getId());
+				product.setCategory(category);
+				List<Product> categorysProduct = result.get(category);
+				if(categorysProduct == null) {
+					categorysProduct = new ArrayList<>();
+					result.put(category, categorysProduct);
+				}
+				categorysProduct.add(product);
+			}
+			return result;
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}
