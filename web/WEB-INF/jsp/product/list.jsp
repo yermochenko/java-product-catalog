@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="u" %>
 
-<u:page title="Список товаров">
+<u:page title="Список товаров" categories="${categories}">
 	<c:url var="deleteUrl" value="/product/delete.html"/>
 	<form action="${deleteUrl}" method="post">
 		<table class="table">

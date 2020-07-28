@@ -2,6 +2,7 @@
 <%@ attribute name="title" required="false" rtexprvalue="true" type="java.lang.String" %>
 <%@ attribute name="css" required="false" rtexprvalue="true" type="java.lang.String" %>
 <%@ attribute name="simple" required="false" rtexprvalue="true" type="java.lang.Boolean" %>
+<%@ attribute name="categories" required="false" rtexprvalue="true" type="java.util.List" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -43,11 +44,31 @@
 				</c:if>
 				<h1 class="site-title">Интернет-магазин &laquo;Всякая всячина&raquo;</h1>
 			</div>
-			<!-- TODO: add side block -->
-			<div class="main-content">
-				<c:if test="${not empty title}"><h2 class="page-title">${title}</h2></c:if>
-				<jsp:doBody/>
-			</div>
+			<c:choose>
+				<c:when test="${not empty categories}">
+					<div class="side">
+						<div class="side-content">
+							<ul class="categories">
+								<c:forEach var="category" items="${categories}">
+									<li class="categories__item">${category.name}</li>
+								</c:forEach>
+							</ul>
+						</div>
+					</div>
+					<div class="main">
+						<div class="main-content">
+							<c:if test="${not empty title}"><h2 class="page-title">${title}</h2></c:if>
+							<jsp:doBody/>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="main-content">
+						<c:if test="${not empty title}"><h2 class="page-title">${title}</h2></c:if>
+						<jsp:doBody/>
+					</div>
+				</c:otherwise>
+			</c:choose>
 			<div class="pusher end"></div>
 		</div>
 		<div class="footer">&copy; Интернет-магазин &laquo;Всякая всячина&raquo;</div>

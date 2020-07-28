@@ -143,6 +143,7 @@ public class Factory implements AutoCloseable {
 		if(productListAction == null) {
 			ProductListAction productListActionImpl = new ProductListAction();
 			productListAction = productListActionImpl;
+			productListActionImpl.setCategoryService(get(CategoryService.class));
 			productListActionImpl.setProductService(get(ProductService.class));
 		}
 		return productListAction;
