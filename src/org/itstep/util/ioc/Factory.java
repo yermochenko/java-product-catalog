@@ -19,8 +19,6 @@ import org.itstep.storage.postgres.BaseDbDaoImpl;
 import org.itstep.storage.postgres.CategoryDbDaoImpl;
 import org.itstep.storage.postgres.ProductDbDaoImpl;
 import org.itstep.storage.postgres.UserDbDaoImpl;
-import org.itstep.util.pool.ConnectionPool;
-import org.itstep.util.pool.ConnectionPoolException;
 import org.itstep.web.action.Action;
 import org.itstep.web.action.LoginAction;
 import org.itstep.web.action.LogoutAction;
@@ -60,7 +58,7 @@ public class Factory implements AutoCloseable {
 		// DAO
 		DependencyInjector daoDI = (obj, factory) -> {
 			BaseDbDaoImpl<?> userDbDaoImpl = (BaseDbDaoImpl<?>)obj;
-			userDbDaoImpl.setConnection(factory.getConnection());
+			userDbDaoImpl.setConnection(factory.get(Connection.class));
 		};
 		injectors.put(UserDbDaoImpl.class, daoDI);
 		injectors.put(CategoryDbDaoImpl.class, daoDI);
@@ -104,6 +102,8 @@ public class Factory implements AutoCloseable {
 		});
 	}
 
+	private static Map<Class<?>, CustomFactory<?>> factories = new HashMap<>();
+
 	private Map<Class<?>, Object> cache = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
@@ -128,34 +128,40 @@ public class Factory implements AutoCloseable {
 					throw new ImplementationInstantiationIocContainerException(e);
 				}
 			} else {
-				throw new InterfaceImplementationNotFoundIocContainerException();
+				CustomFactory<?> factory = factories.get(i);
+				if(factory != null) {
+					o = factory.newInstance();
+					cache.put(i, o);
+				} else {
+					throw new InterfaceImplementationNotFoundIocContainerException();
+				}
 			}
 		}
 		return (T)o;
+	}
+
+	public static void addCustomFactory(Class<?> c, CustomFactory<?> factory) {
+		factories.put(c, factory);
 	}
 
 	public Action getAction(String url) throws LogicException {
 		return (Action)get(actions.get(url));
 	}
 
-	private Connection connection = null;
-	public Connection getConnection() throws LogicException {
-		if(connection == null) {
-			try {
-				connection = ConnectionPool.getInstance().getConnection();
-			} catch(ConnectionPoolException e) {
-				throw new LogicException(e);
-			}
-		}
-		return connection;
-	}
-
 	@Override
 	public void close() {
-		try { connection.close(); } catch(Exception e) {}
+		for(Object obj : cache.values()) {
+			if(obj instanceof AutoCloseable) {
+				try { ((AutoCloseable)obj).close(); } catch(Exception e) {}
+			}
+		}
 	}
 
 	private static interface DependencyInjector {
 		void inject(Object obj, Factory factory) throws LogicException;
+	}
+
+	public static interface CustomFactory<T> {
+		T newInstance() throws LogicException;
 	}
 }
