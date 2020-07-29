@@ -25,8 +25,8 @@
 					</div>
 				</div>
 			</c:forEach>
+			<p class="end">Итого товаров в категории&nbsp;&mdash; ${fn:length(item.value)}</p>
 		</c:forEach>
-		<p class="end">Итого ${fn:length(products)} товаров</p>
 		<c:url var="editUrl" value="/product/edit.html"/>
 		<a href="${editUrl}" class="form__button">Добавить</a>
 		<button type="submit" class="form__button_danger">Удалить</button>
