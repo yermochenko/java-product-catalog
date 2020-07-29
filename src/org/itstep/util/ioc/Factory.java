@@ -43,7 +43,17 @@ public class Factory implements AutoCloseable {
 		iocContainer.put(ProductService.class, ProductServiceImpl.class);
 	}
 
-	private Map<Class<?>, Object> cache = new HashMap<>();
+	private static Map<String, Class<?>> actions = new HashMap<>();
+	static {
+		actions.put("/", MainAction.class);
+		actions.put("/index", MainAction.class);
+		actions.put("/login", LoginAction.class);
+		actions.put("/logout", LogoutAction.class);
+		actions.put("/product/list", ProductListAction.class);
+		actions.put("/product/edit", ProductEditAction.class);
+		actions.put("/product/save", ProductSaveAction.class);
+		actions.put("/product/delete", ProductDeleteAction.class);
+	}
 
 	private static Map<Class<?>, DependencyInjector> injectors = new HashMap<>();
 	static {
@@ -69,18 +79,51 @@ public class Factory implements AutoCloseable {
 			service.setProductDao(factory.get(ProductDao.class));
 			service.setCategoryDao(factory.get(CategoryDao.class));
 		});
+		// Actions
+		injectors.put(LoginAction.class, (obj, factory) -> {
+			LoginAction loginAction = (LoginAction)obj;
+			loginAction.setUserService(factory.get(UserService.class));
+		});
+		injectors.put(ProductListAction.class, (obj, factory) -> {
+			ProductListAction productListAction = (ProductListAction)obj;
+			productListAction.setCategoryService(factory.get(CategoryService.class));
+			productListAction.setProductService(factory.get(ProductService.class));
+		});
+		injectors.put(ProductEditAction.class, (obj, factory) -> {
+			ProductEditAction productEditAction = (ProductEditAction)obj;
+			productEditAction.setCategoryService(factory.get(CategoryService.class));
+			productEditAction.setProductService(factory.get(ProductService.class));
+		});
+		injectors.put(ProductSaveAction.class,	(obj, factory) -> {
+			ProductSaveAction productSaveAction = (ProductSaveAction)obj;
+			productSaveAction.setProductService(factory.get(ProductService.class));
+		});
+		injectors.put(ProductDeleteAction.class, (obj, factory) -> {
+			ProductDeleteAction productDeleteAction = (ProductDeleteAction)obj;
+			productDeleteAction.setProductService(factory.get(ProductService.class));
+		});
 	}
+
+	private Map<Class<?>, Object> cache = new HashMap<>();
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> i) throws LogicException {
 		Object o = cache.get(i);
 		if(o == null) {
-			Class<?> c = iocContainer.get(i);
+			Class<?> c;
+			if(i.isInterface()) {
+				c = iocContainer.get(i);
+			} else {
+				c = i;
+			}
 			if(c != null) {
 				try {
 					o = c.getConstructor().newInstance();
 					cache.put(i, o);
-					injectors.get(c).inject(o, this);
+					DependencyInjector injector = injectors.get(c);
+					if(injector != null) {
+						injector.inject(o, this);
+					}
 				} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 					throw new ImplementationInstantiationIocContainerException(e);
 				}
@@ -91,93 +134,8 @@ public class Factory implements AutoCloseable {
 		return (T)o;
 	}
 
-	private Map<String, ActionFactory> actions = new HashMap<>();
-	{
-		ActionFactory mainActionFactory = () -> getMainAction();
-		actions.put("/", mainActionFactory);
-		actions.put("/index", mainActionFactory);
-		actions.put("/login", () -> getLoginAction());
-		actions.put("/logout", () -> getLogoutAction());
-		actions.put("/product/list", () -> getProductListAction());
-		actions.put("/product/edit", () -> getProductEditAction());
-		actions.put("/product/save", () -> getProductSaveAction());
-		actions.put("/product/delete", () -> getProductDeleteAction());
-	}
-
 	public Action getAction(String url) throws LogicException {
-		ActionFactory factory = actions.get(url);
-		if(factory != null) {
-			return factory.getInstance();
-		}
-		return null;
-	}
-
-	private Action mainAction = null;
-	public Action getMainAction() {
-		if(mainAction == null) {
-			mainAction = new MainAction();
-		}
-		return mainAction;
-	}
-
-	private Action loginAction = null;
-	public Action getLoginAction() throws LogicException {
-		if(loginAction == null) {
-			LoginAction loginActionImpl = new LoginAction();
-			loginAction = loginActionImpl;
-			loginActionImpl.setUserService(get(UserService.class));
-		}
-		return loginAction;
-	}
-
-	private Action logoutAction = null;
-	public Action getLogoutAction() {
-		if(logoutAction == null) {
-			logoutAction = new LogoutAction();
-		}
-		return logoutAction;
-	}
-
-	private Action productListAction = null;
-	public Action getProductListAction() throws LogicException {
-		if(productListAction == null) {
-			ProductListAction productListActionImpl = new ProductListAction();
-			productListAction = productListActionImpl;
-			productListActionImpl.setCategoryService(get(CategoryService.class));
-			productListActionImpl.setProductService(get(ProductService.class));
-		}
-		return productListAction;
-	}
-
-	private Action productEditAction = null;
-	public Action getProductEditAction() throws LogicException {
-		if(productEditAction == null) {
-			ProductEditAction productEditActionImpl = new ProductEditAction();
-			productEditAction = productEditActionImpl;
-			productEditActionImpl.setCategoryService(get(CategoryService.class));
-			productEditActionImpl.setProductService(get(ProductService.class));
-		}
-		return productEditAction;
-	}
-
-	private Action productSaveAction = null;
-	public Action getProductSaveAction() throws LogicException {
-		if(productSaveAction == null) {
-			ProductSaveAction productSaveActionImpl = new ProductSaveAction();
-			productSaveAction = productSaveActionImpl;
-			productSaveActionImpl.setProductService(get(ProductService.class));
-		}
-		return productSaveAction;
-	}
-
-	private Action productDeleteAction = null;
-	public Action getProductDeleteAction() throws LogicException {
-		if(productDeleteAction == null) {
-			ProductDeleteAction productDeleteActionImpl = new ProductDeleteAction();
-			productDeleteAction = productDeleteActionImpl;
-			productDeleteActionImpl.setProductService(get(ProductService.class));
-		}
-		return productDeleteAction;
+		return (Action)get(actions.get(url));
 	}
 
 	private Connection connection = null;
@@ -195,10 +153,6 @@ public class Factory implements AutoCloseable {
 	@Override
 	public void close() {
 		try { connection.close(); } catch(Exception e) {}
-	}
-
-	private static interface ActionFactory {
-		Action getInstance() throws LogicException;
 	}
 
 	private static interface DependencyInjector {

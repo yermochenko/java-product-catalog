@@ -57,12 +57,12 @@ public class ProductServiceImpl implements ProductService {
 				Category category = product.getCategory();
 				category = categoryDao.read(category.getId());
 				product.setCategory(category);
-				List<Product> categorysProduct = result.get(category);
-				if(categorysProduct == null) {
-					categorysProduct = new ArrayList<>();
-					result.put(category, categorysProduct);
+				List<Product> categorysProducts = result.get(category);
+				if(categorysProducts == null) {
+					categorysProducts = new ArrayList<>();
+					result.put(category, categorysProducts);
 				}
-				categorysProduct.add(product);
+				categorysProducts.add(product);
 			}
 			return result;
 		} catch(DaoException e) {
