@@ -23,6 +23,15 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	public Category findById(Long id) throws LogicException {
+		try {
+			return categoryDao.read(id);
+		} catch(DaoException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
 	public void save(Category category) throws LogicException {
 		try {
 			if(category.getId() == null) {

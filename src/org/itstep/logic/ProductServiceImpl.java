@@ -25,13 +25,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> findAll() throws LogicException {
+	public List<Product> findByCategory(Long categoryId) throws LogicException {
 		try {
-			List<Product> products = productDao.read();
-			for(Product product : products) {
-				Category category = product.getCategory();
-				category = categoryDao.read(category.getId());
-				product.setCategory(category);
+			List<Product> products = productDao.readByCategory(categoryId);
+			Category category = categoryDao.read(categoryId);
+			if(category != null) {
+				for(Product product : products) {
+					product.setCategory(category);
+				}
 			}
 			return products;
 		} catch(DaoException e) {

@@ -50,7 +50,10 @@
 						<div class="side-content">
 							<ul class="categories">
 								<c:forEach var="category" items="${categories}">
-									<li class="categories__item">${category.name}</li>
+									<c:url var="productListUrl" value="/product/list.html">
+										<c:param name="category" value="${category.id}"/>
+									</c:url>
+									<li><a href="${productListUrl}" class="categories__item">${category.name}</a></li>
 								</c:forEach>
 							</ul>
 						</div>

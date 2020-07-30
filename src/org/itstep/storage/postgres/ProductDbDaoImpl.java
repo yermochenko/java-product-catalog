@@ -87,19 +87,21 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductD
 	}
 
 	@Override
-	public List<Product> read() throws DaoException {
-		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" ORDER BY \"name\"";
-		Statement s = null;
+	public List<Product> readByCategory(Long categoryId) throws DaoException {
+		String sql = "SELECT \"id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"category_id\" = ? ORDER BY \"name\"";
+		PreparedStatement s = null;
 		ResultSet r = null;
 		try {
-			s = getConnection().createStatement();
-			r = s.executeQuery(sql);
+			s = getConnection().prepareStatement(sql);
+			s.setLong(1, categoryId);
+			r = s.executeQuery();
+			Category category = new Category();
+			category.setId(categoryId);
 			List<Product> products = new ArrayList<>();
 			while(r.next()) {
 				Product product = new Product();
 				product.setId(r.getLong("id"));
-				product.setCategory(new Category());
-				product.getCategory().setId(r.getLong("category_id"));
+				product.setCategory(category);
 				product.setName(r.getString("name"));
 				product.setPrice(r.getLong("price"));
 				product.setAmount(r.getInt("amount"));

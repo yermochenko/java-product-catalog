@@ -81,7 +81,10 @@ html, body {
 }
 
 .categories__item {
+	display: block;
 	padding: 20px;
+	color: black;
+	text-decoration: none;
 }
 
 .categories__item:before {

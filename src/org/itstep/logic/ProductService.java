@@ -7,7 +7,7 @@ import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 
 public interface ProductService {
-	List<Product> findAll() throws LogicException;
+	List<Product> findByCategory(Long categoryId) throws LogicException;
 
 	List<Product> findNamesBySearchString(String search) throws LogicException;
 
