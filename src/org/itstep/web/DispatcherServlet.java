@@ -7,14 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.itstep.logic.LogicException;
 import org.itstep.util.ioc.Factory;
 import org.itstep.web.action.Action;
 import org.itstep.web.action.Action.Result;
 import org.itstep.web.action.Action.ResultType;
+
 import org.itstep.web.action.ActionException;
 
 public class DispatcherServlet extends HttpServlet {
+	private static final Logger logger = LogManager.getLogger();
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		process(req, resp);
@@ -27,6 +32,7 @@ public class DispatcherServlet extends HttpServlet {
 
 	private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String uri = req.getRequestURI();
+		logger.debug(String.format("Start processing request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
 		uri = uri.substring(req.getContextPath().length());
 		if(uri.endsWith(".html")) {
 			uri = uri.substring(0, uri.length() - ".html".length());
@@ -53,6 +59,7 @@ public class DispatcherServlet extends HttpServlet {
 		} catch(ActionException e) {
 			resp.sendError(e.getCode());
 		} catch(LogicException e) {
+			logger.error(String.format("Error processing request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
 			throw new ServletException(e);
 		}
 	}

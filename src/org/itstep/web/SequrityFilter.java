@@ -16,10 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.itstep.domain.Role;
 import org.itstep.domain.User;
 
 public class SequrityFilter implements Filter {
+	private static final Logger logger = LogManager.getLogger();
+
 	private static Set<String> whiteURLs = new HashSet<>();
 	static {
 		whiteURLs.add("/");
@@ -69,6 +73,7 @@ public class SequrityFilter implements Filter {
 		if(access) {
 			chain.doFilter(req, resp);
 		} else {
+			logger.warn(String.format("Access denied for request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
 			response.sendRedirect(request.getContextPath() + "/login.html?message=" + URLEncoder.encode("Доступ запрещён", "UTF-8"));
 		}
 	}

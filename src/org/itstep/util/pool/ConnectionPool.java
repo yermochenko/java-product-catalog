@@ -10,7 +10,12 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ConnectionPool {
+	private static final Logger logger = LogManager.getLogger();
+
 	private String jdbcUrl;
 	private String jdbcUser;
 	private String jdbcPassword;
@@ -37,11 +42,14 @@ public class ConnectionPool {
 				}
 			} else if(usedConnections.size() < maxSize) {
 				connection = establishConnection();
+				logger.warn("Was created new connection");
 			} else {
+				logger.error("Connection pool max size exceeded");
 				throw new ConnectionPoolException();
 			}
 		}
 		usedConnections.add(connection);
+		logger.info(String.format("Take connection from pool, used connections - %04d, free connections - %04d", usedConnections.size(), freeConnections.size()));
 		return connection;
 	}
 
@@ -56,6 +64,7 @@ public class ConnectionPool {
 			for(int i = 0; i < minSize; i++) {
 				freeConnections.add(establishConnection());
 			}
+			logger.info(String.format("Connection pool init success, free connections - %04d", freeConnections.size()));
 		} catch(ClassNotFoundException e) {
 			throw new ConnectionPoolException(e);
 		}
@@ -70,7 +79,8 @@ public class ConnectionPool {
 					close(connection);
 				}
 				usedConnections.clear();
-				closer.shutdown(); // TODO: проверить, отработал ли executor
+				closer.shutdown();
+				logger.info("All connections in pool closed");
 			}
 		}
 	}
@@ -80,6 +90,7 @@ public class ConnectionPool {
 			usedConnections.remove(connection);
 			connection.clearWarnings();
 			freeConnections.add(connection);
+			logger.info(String.format("Return connection to pool, used connections - %04d, free connections - %04d", usedConnections.size(), freeConnections.size()));
 		} catch(SQLException e) {
 			close(connection);
 			throw e;
@@ -100,6 +111,7 @@ public class ConnectionPool {
 		closer.execute(() -> {
 			synchronized (connection) {
 				try { connection.getConnection().close(); } catch(SQLException e) {}
+				logger.info("Connection closed");
 			}
 		});
 	}

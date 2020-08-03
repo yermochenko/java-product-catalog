@@ -6,12 +6,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.itstep.logic.LogicException;
 import org.itstep.util.ioc.Factory;
 import org.itstep.util.pool.ConnectionPool;
 import org.itstep.util.pool.ConnectionPoolException;
 
 public class ApplicationInitializer implements ServletContextListener {
+	private static final Logger logger = LogManager.getLogger();
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
@@ -28,16 +31,19 @@ public class ApplicationInitializer implements ServletContextListener {
 				try {
 					return ConnectionPool.getInstance().getConnection();
 				} catch (ConnectionPoolException e) {
+					LogManager.getLogger(ConnectionPool.class).error("Can't get connection from pool", e);
 					throw new LogicException(e);
 				}
 			});
+			logger.info("Application was successfull initialized");
 		} catch(ConnectionPoolException | NumberFormatException e) {
-			e.printStackTrace();
+			logger.fatal("Can't initialize application", e);
 		}
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		ConnectionPool.getInstance().destroy();
+		logger.info("Application was successfull destroyed");
 	}
 }
