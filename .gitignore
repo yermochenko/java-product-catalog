@@ -1,2 +1,2 @@
 .*
-web/WEB-INF/classes/
+/target/
