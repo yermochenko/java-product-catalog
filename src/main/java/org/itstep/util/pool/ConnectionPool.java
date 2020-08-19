@@ -49,7 +49,7 @@ public class ConnectionPool {
 			}
 		}
 		usedConnections.add(connection);
-		logger.info(String.format("Take connection from pool, used connections - %04d, free connections - %04d", usedConnections.size(), freeConnections.size()));
+		logger.info("Take connection from pool, used connections - {}, free connections - {}", usedConnections.size(), freeConnections.size());
 		return connection;
 	}
 
@@ -64,7 +64,7 @@ public class ConnectionPool {
 			for(int i = 0; i < minSize; i++) {
 				freeConnections.add(establishConnection());
 			}
-			logger.info(String.format("Connection pool init success, free connections - %04d", freeConnections.size()));
+			logger.info("Connection pool init success, free connections - {}", freeConnections.size());
 		} catch(ClassNotFoundException e) {
 			throw new ConnectionPoolException(e);
 		}
@@ -90,7 +90,7 @@ public class ConnectionPool {
 			usedConnections.remove(connection);
 			connection.clearWarnings();
 			freeConnections.add(connection);
-			logger.info(String.format("Return connection to pool, used connections - %04d, free connections - %04d", usedConnections.size(), freeConnections.size()));
+			logger.info("Return connection to pool, used connections - {}, free connections - {}", usedConnections.size(), freeConnections.size());
 		} catch(SQLException e) {
 			close(connection);
 			throw e;

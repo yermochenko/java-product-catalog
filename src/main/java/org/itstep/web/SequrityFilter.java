@@ -73,7 +73,7 @@ public class SequrityFilter implements Filter {
 		if(access) {
 			chain.doFilter(req, resp);
 		} else {
-			logger.warn(String.format("Access denied for request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
+			logger.warn("Access denied for request on URI \"{}\" from client {}", uri, req.getLocalAddr());
 			response.sendRedirect(request.getContextPath() + "/login.html?message=" + URLEncoder.encode("Доступ запрещён", "UTF-8"));
 		}
 	}

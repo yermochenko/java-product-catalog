@@ -16,7 +16,7 @@ public class AuthorizationLogger implements HttpSessionListener, HttpSessionAttr
 	public void sessionDestroyed(HttpSessionEvent e) {
 		User user = (User)e.getSession().getAttribute("sessionUser");
 		if(user != null) {
-			logger.info(String.format("User \"%s\" (%s) logout", user.getLogin(), user.getRole()));
+			logger.info("User \"{}\" ({}) logout", user.getLogin(), user.getRole());
 		}
 	}
 
@@ -24,7 +24,7 @@ public class AuthorizationLogger implements HttpSessionListener, HttpSessionAttr
 	public void attributeAdded(HttpSessionBindingEvent e) {
 		if("sessionUser".equals(e.getName())) {
 			User user = (User)e.getValue();
-			logger.info(String.format("User \"%s\" (%s) login", user.getLogin(), user.getRole()));
+			logger.info("User \"{}\" ({}) login", user.getLogin(), user.getRole());
 		}
 	}
 }

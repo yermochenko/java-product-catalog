@@ -32,7 +32,7 @@ public class DispatcherServlet extends HttpServlet {
 
 	private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String uri = req.getRequestURI();
-		logger.debug(String.format("Start processing request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
+		logger.debug("Start processing request on URI \"{}\" from client {}", uri, req.getLocalAddr());
 		uri = uri.substring(req.getContextPath().length());
 		if(uri.endsWith(".html")) {
 			uri = uri.substring(0, uri.length() - ".html".length());
@@ -59,7 +59,7 @@ public class DispatcherServlet extends HttpServlet {
 		} catch(ActionException e) {
 			resp.sendError(e.getCode());
 		} catch(LogicException e) {
-			logger.error(String.format("Error processing request on URI \"%s\" from client %s", uri, req.getLocalAddr()));
+			logger.error("Error processing request on URI \"{}\" from client {}", uri, req.getLocalAddr());
 			throw new ServletException(e);
 		}
 	}
