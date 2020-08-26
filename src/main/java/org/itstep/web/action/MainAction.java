@@ -7,7 +7,11 @@ import javax.servlet.http.HttpSession;
 import org.itstep.domain.Role;
 import org.itstep.domain.User;
 import org.itstep.logic.LogicException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class MainAction implements Action {
 	@Override
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {

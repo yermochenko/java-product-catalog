@@ -9,17 +9,16 @@ import java.util.Map;
 import org.itstep.domain.Entity;
 import org.itstep.storage.Dao;
 import org.itstep.storage.DaoException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 abstract public class BaseDbDaoImpl<T extends Entity> implements Dao<T> {
+	@Autowired
 	private Connection c;
+
 	private Map<Long, T> cache = new HashMap<>();
 
 	protected final Connection getConnection() {
 		return c;
-	}
-
-	public final void setConnection(Connection c) {
-		this.c = c;
 	}
 
 	@Override

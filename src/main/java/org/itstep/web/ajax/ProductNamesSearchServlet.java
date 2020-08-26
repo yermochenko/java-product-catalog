@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.itstep.domain.Product;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.ProductService;
-import org.itstep.util.ioc.Factory;
+import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,8 +22,9 @@ public class ProductNamesSearchServlet extends HttpServlet {
 		String search = req.getQueryString();
 		if(search != null) {
 			search = URLDecoder.decode(search, "UTF-8");
-			try(Factory factory = new Factory()) {
-				ProductService service = factory.get(ProductService.class);
+			try {
+				ApplicationContext context = (ApplicationContext)getServletContext().getAttribute("spring-context");
+				ProductService service = context.getBean(ProductService.class);
 				List<Product> products = service.findNamesBySearchString(search);
 				resp.setContentType("application/json");
 				resp.setCharacterEncoding("UTF-8");

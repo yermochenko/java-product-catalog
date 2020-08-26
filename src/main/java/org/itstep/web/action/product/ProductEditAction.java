@@ -10,13 +10,15 @@ import org.itstep.domain.Product;
 import org.itstep.logic.CategoryService;
 import org.itstep.logic.LogicException;
 import org.itstep.web.action.ActionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class ProductEditAction extends BaseProductAction {
+	@Autowired
 	private CategoryService categoryService;
-
-	public void setCategoryService(CategoryService categoryService) {
-		this.categoryService = categoryService;
-	}
 
 	@Override
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
@@ -25,7 +27,7 @@ public class ProductEditAction extends BaseProductAction {
 			req.setAttribute("categories", categories);
 			String id = req.getParameter("id");
 			if(id != null) {
-				Product product = getProductService().findById(Long.parseLong(id));
+				Product product = productService.findById(Long.parseLong(id));
 				if(product == null) {
 					throw new IllegalArgumentException();
 				}

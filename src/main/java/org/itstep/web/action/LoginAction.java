@@ -7,13 +7,15 @@ import javax.servlet.http.HttpSession;
 import org.itstep.domain.User;
 import org.itstep.logic.LogicException;
 import org.itstep.logic.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class LoginAction implements Action {
+	@Autowired
 	private UserService userService;
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
 
 	@Override
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {

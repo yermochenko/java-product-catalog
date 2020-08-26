@@ -11,7 +11,11 @@ import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.ProductDao;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductDao {
 	@Override
 	protected Long createRaw(Product product) throws DaoException {
@@ -119,7 +123,7 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductD
 
 	@Override
 	public List<Product> readBySearchString(String search) throws DaoException {
-		String sql = String.format("SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"name\" LIKE '%%%s%%' ORDER BY \"name\"", search);
+		String sql = String.format("SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" WHERE \"name\" ILIKE '%%%s%%' ORDER BY \"name\"", search);
 		Statement s = null;
 		ResultSet r = null;
 		try {
@@ -148,7 +152,7 @@ public class ProductDbDaoImpl extends BaseDbDaoImpl<Product> implements ProductD
 
 	@Override
 	public List<Product> readLatest() throws DaoException {
-		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" ORDER BY \"date\" LIMIT 10";
+		String sql = "SELECT \"id\", \"category_id\", \"name\", \"price\", \"amount\", \"date\" FROM \"product\" ORDER BY \"date\" DESC LIMIT 10";
 		Statement s = null;
 		ResultSet r = null;
 		try {

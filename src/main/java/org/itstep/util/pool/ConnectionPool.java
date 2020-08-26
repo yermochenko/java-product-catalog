@@ -111,7 +111,6 @@ public class ConnectionPool {
 		closer.execute(() -> {
 			synchronized (connection) {
 				try { connection.getConnection().close(); } catch(SQLException e) {}
-				logger.info("Connection closed");
 			}
 		});
 	}

@@ -7,7 +7,11 @@ import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.logic.LogicException;
 import org.itstep.web.action.ActionException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class ProductSaveAction extends BaseProductAction {
 	@Override
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
@@ -35,7 +39,7 @@ public class ProductSaveAction extends BaseProductAction {
 			if(product.getAmount() <= 0) {
 				throw new IllegalArgumentException();
 			}
-			getProductService().save(product);
+			productService.save(product);
 			return new Result("/product/list");
 		} catch(IllegalArgumentException e) {
 			throw new ActionException(e, 400);

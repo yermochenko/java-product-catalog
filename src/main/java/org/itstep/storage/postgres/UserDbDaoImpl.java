@@ -9,7 +9,11 @@ import org.itstep.domain.Role;
 import org.itstep.domain.User;
 import org.itstep.storage.DaoException;
 import org.itstep.storage.UserDao;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class UserDbDaoImpl extends BaseDbDaoImpl<User> implements UserDao {
 	@Override
 	protected Long createRaw(User user) throws DaoException {

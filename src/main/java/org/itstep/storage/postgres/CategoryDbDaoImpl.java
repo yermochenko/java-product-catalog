@@ -10,7 +10,11 @@ import java.util.List;
 import org.itstep.domain.Category;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.DaoException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class CategoryDbDaoImpl extends BaseDbDaoImpl<Category> implements CategoryDao {
 	@Override
 	protected Long createRaw(Category category) throws DaoException {

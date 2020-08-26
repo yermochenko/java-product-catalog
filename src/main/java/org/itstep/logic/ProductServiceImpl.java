@@ -9,20 +9,20 @@ import java.util.Map;
 import org.itstep.domain.Category;
 import org.itstep.domain.Product;
 import org.itstep.storage.ProductDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.itstep.storage.CategoryDao;
 import org.itstep.storage.DaoException;
 
+@Component
+@Scope("prototype")
 public class ProductServiceImpl implements ProductService {
+	@Autowired
 	private ProductDao productDao;
+
+	@Autowired
 	private CategoryDao categoryDao;
-
-	public void setProductDao(ProductDao productDao) {
-		this.productDao = productDao;
-	}
-
-	public void setCategoryDao(CategoryDao categoryDao) {
-		this.categoryDao = categoryDao;
-	}
 
 	@Override
 	public List<Product> findByCategory(Long categoryId) throws LogicException {

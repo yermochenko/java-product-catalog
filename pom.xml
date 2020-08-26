@@ -18,6 +18,7 @@
 		<postgresql.jdbc.driver.version>42.2.5</postgresql.jdbc.driver.version>
 		<servlet.api.version>4.0.1</servlet.api.version>
 		<jsp.api.version>2.3.3</jsp.api.version>
+		<spring.version>5.2.8.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
@@ -50,6 +51,16 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>

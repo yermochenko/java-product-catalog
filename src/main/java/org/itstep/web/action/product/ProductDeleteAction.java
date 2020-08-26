@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.itstep.logic.LogicException;
 import org.itstep.web.action.ActionException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class ProductDeleteAction extends BaseProductAction {
 	@Override
 	public Result exec(HttpServletRequest req, HttpServletResponse resp) throws LogicException {
@@ -19,7 +23,7 @@ public class ProductDeleteAction extends BaseProductAction {
 				for(String id : idsString) {
 					ids.add(Long.parseLong(id));
 				}
-				getProductService().delete(ids);
+				productService.delete(ids);
 			} catch(NumberFormatException e) {
 				throw new ActionException(e, 400);
 			}
