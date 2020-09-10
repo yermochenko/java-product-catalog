@@ -28,8 +28,9 @@
 		<div class="wrapper">
 			<div class="header">
 				<c:if test="${empty simple or not simple}">
-					<form class="search-form" action="#">
-						<input id="search-text" type="text" name="search" list="search-text-datalist" autocomplete="off">
+					<c:url var="searchUrl" value="/product/search.html"/>
+					<form class="search-form" action="${searchUrl}">
+						<input id="search-text" type="text" name="query" list="search-text-datalist" autocomplete="off">
 						<datalist id="search-text-datalist"></datalist>
 						<button type="submit">Найти</button>
 					</form>

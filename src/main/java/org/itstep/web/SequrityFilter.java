@@ -36,6 +36,7 @@ public class SequrityFilter implements Filter {
 		accessURLs.put(Role.ADMIN, adminURLs);
 		Set<String> managerURLs = new HashSet<>();
 		managerURLs.add("/product/list.html");
+		managerURLs.add("/product/search.html");
 		managerURLs.add("/product/edit.html");
 		managerURLs.add("/product/save.html");
 		managerURLs.add("/product/delete.html");

@@ -43,6 +43,6 @@ public class ProductListAction extends BaseProductAction {
 			Map<Category, List<Product>> products = productService.findLatest();
 			req.setAttribute("products", products);
 		}
-		return null;
+		return new Result("/general/products", ResultType.FORWARD);
 	}
 }

@@ -11,6 +11,8 @@ public interface ProductService {
 
 	List<Product> findNamesBySearchString(String search) throws LogicException;
 
+	Map<Category, List<Product>> findBySearchString(String search) throws LogicException;
+
 	Map<Category, List<Product>> findLatest() throws LogicException;
 
 	Product findById(Long id) throws LogicException;

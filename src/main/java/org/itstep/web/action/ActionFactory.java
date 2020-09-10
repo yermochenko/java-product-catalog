@@ -9,6 +9,7 @@ import org.itstep.web.action.product.ProductDeleteAction;
 import org.itstep.web.action.product.ProductEditAction;
 import org.itstep.web.action.product.ProductListAction;
 import org.itstep.web.action.product.ProductSaveAction;
+import org.itstep.web.action.product.ProductSearchAction;
 import org.springframework.context.ApplicationContext;
 
 public class ActionFactory {
@@ -19,6 +20,7 @@ public class ActionFactory {
 		actions.put("/login", LoginAction.class);
 		actions.put("/logout", LogoutAction.class);
 		actions.put("/product/list", ProductListAction.class);
+		actions.put("/product/search", ProductSearchAction.class);
 		actions.put("/product/edit", ProductEditAction.class);
 		actions.put("/product/save", ProductSaveAction.class);
 		actions.put("/product/delete", ProductDeleteAction.class);

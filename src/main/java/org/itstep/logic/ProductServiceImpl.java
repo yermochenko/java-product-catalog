@@ -50,22 +50,18 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public Map<Category, List<Product>> findBySearchString(String search) throws LogicException {
+		try {
+			return extract(productDao.readBySearchString(search));
+		} catch(DaoException e) {
+			throw new LogicException(e);
+		}
+	}
+
+	@Override
 	public Map<Category, List<Product>> findLatest() throws LogicException {
 		try {
-			Map<Category, List<Product>> result = new HashMap<>();
-			List<Product> products = productDao.readLatest();
-			for(Product product : products) {
-				Category category = product.getCategory();
-				category = categoryDao.read(category.getId());
-				product.setCategory(category);
-				List<Product> categorysProducts = result.get(category);
-				if(categorysProducts == null) {
-					categorysProducts = new ArrayList<>();
-					result.put(category, categorysProducts);
-				}
-				categorysProducts.add(product);
-			}
-			return result;
+			return extract(productDao.readLatest());
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}
@@ -110,5 +106,21 @@ public class ProductServiceImpl implements ProductService {
 		} catch(DaoException e) {
 			throw new LogicException(e);
 		}
+	}
+
+	private Map<Category, List<Product>> extract(List<Product> products) throws DaoException {
+		Map<Category, List<Product>> result = new HashMap<>();
+		for(Product product : products) {
+			Category category = product.getCategory();
+			category = categoryDao.read(category.getId());
+			product.setCategory(category);
+			List<Product> categorysProducts = result.get(category);
+			if(categorysProducts == null) {
+				categorysProducts = new ArrayList<>();
+				result.put(category, categorysProducts);
+			}
+			categorysProducts.add(product);
+		}
+		return result;
 	}
 }
