@@ -6,11 +6,9 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.itstep.util.config.ApplicationConfiguration;
+//import org.itstep.util.config.ApplicationConfiguration;
 import org.itstep.util.pool.ConnectionPool;
 import org.itstep.util.pool.ConnectionPoolException;
-import org.itstep.web.action.ActionFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class ApplicationInitializer implements ServletContextListener {
 	private static final Logger logger = LogManager.getLogger();
@@ -26,8 +24,6 @@ public class ApplicationInitializer implements ServletContextListener {
 			int    connectionPoolMaxSize           = Integer.parseInt(context.getInitParameter("connection-pool-max-size"));
 			int    connectionPoolValidationTimeout = Integer.parseInt(context.getInitParameter("connection-pool-validation-timeout"));
 			ConnectionPool.getInstance().init(jdbcDriver, jdbcUrl, jdbcUser, jdbcPassword, connectionPoolMinSize, connectionPoolMaxSize, connectionPoolValidationTimeout);
-			context.setAttribute("spring-context", new AnnotationConfigApplicationContext(ApplicationConfiguration.class));
-			ActionFactory.init(context);
 			logger.info("Application was successfull initialized");
 		} catch(ConnectionPoolException | NumberFormatException e) {
 			logger.fatal("Can't initialize application", e);

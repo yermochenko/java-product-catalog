@@ -8,12 +8,14 @@ window.addEventListener('load', function() {
 		if(this.value.length >= 3) {
 			var request = new XMLHttpRequest();
 			request.onload = function() {
-				var products = JSON.parse(this.responseText);
-				products.forEach((product) => {
-					var option = document.createElement('option');
-					option.appendChild(document.createTextNode(product.name));
-					datalist.appendChild(option);
-				});
+				if(this.status === 200) {
+					var products = JSON.parse(this.responseText);
+					products.forEach((product) => {
+						var option = document.createElement('option');
+						option.appendChild(document.createTextNode(product.name));
+						datalist.appendChild(option);
+					});
+				}
 			};
 			request.open('GET', searchUrl + '?' + encodeURIComponent(this.value));
 			request.send();

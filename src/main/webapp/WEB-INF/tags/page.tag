@@ -17,7 +17,7 @@
 		<c:if test="${not empty css}">
 			<link rel="stylesheet" href="${css}" type="text/css">
 		</c:if>
-		<c:url var="searchJsonUrl" value="/product/search.json"/>
+		<c:url var="searchJsonUrl" value="/product/search-names.json"/>
 		<script type="text/javascript">
 			var searchUrl = '${searchJsonUrl}';
 		</script>

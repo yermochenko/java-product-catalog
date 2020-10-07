@@ -4,7 +4,7 @@
 
 <u:page title="Ошибка">
 	<c:choose>
-		<c:when test="${not empty pageContext.exception}">
+		<c:when test="${not empty exception}">
 			<p>Ошибка работы с базой данных</p>
 		</c:when>
 		<c:when test="${pageContext.errorData.statusCode == 404}">
@@ -17,7 +17,6 @@
 			<p>Непредвиденная ошибка работы приложения</p>
 		</c:otherwise>
 	</c:choose>
-	<p>Пожалуйста, повторите свой запрос позже</p>
 	<c:url var="mainUrl" value="/index.html"/>
 	<p><a href="${mainUrl}" class="form__button">Назад</a></p>
 </u:page>
