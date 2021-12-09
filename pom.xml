@@ -14,7 +14,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<jstl.version>1.2</jstl.version>
 		<log4j.version>2.13.3</log4j.version>
-		<jackson.version>2.9.4</jackson.version>
+		<jackson.version>2.9.10.8</jackson.version>
 		<postgresql.jdbc.driver.version>42.2.5</postgresql.jdbc.driver.version>
 		<servlet.api.version>4.0.1</servlet.api.version>
 		<jsp.api.version>2.3.3</jsp.api.version>
