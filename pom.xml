@@ -18,7 +18,7 @@
 		<postgresql.jdbc.driver.version>42.2.5</postgresql.jdbc.driver.version>
 		<servlet.api.version>4.0.1</servlet.api.version>
 		<jsp.api.version>2.3.3</jsp.api.version>
-		<spring.version>5.2.8.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 	</properties>
 
 	<dependencies>
